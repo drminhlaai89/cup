@@ -72,16 +72,18 @@ class App {
     // Start a rendering loop using this.onXRFrame.
     this.xrSession.requestAnimationFrame(this.onXRFrame);
 
-    const selectButton = document.getElementById('selectButton');
-    selectButton.addEventListener('click', this.onClickSelect);
+    // const selectButton = document.getElementById('selectButton');
+    // selectButton.addEventListener('click', this.onClickSelect);
+
+    this.xrSession.addEventListener("select", this.onSelect);
   }
 
-  onClickSelect = () => {
-    this.xrSession.addEventListener("select", this.onSelect);
-    const selectButton = document.getElementById('selectButton');
-    selectButton.removeEventListener('click', this.onClickSelect);
-    // this.xrSession.removeEventListener("select",this.onSelect);
-  }
+  // onClickSelect = () => {
+  //   this.xrSession.addEventListener("select", this.onSelect);
+  //   const selectButton = document.getElementById('selectButton');
+  //   selectButton.removeEventListener('click', this.onClickSelect);
+  //   // this.xrSession.removeEventListener("select",this.onSelect);
+  // }
 
   /** Place a sunflower when the screen is tapped. */
   onSelect = () => {
