@@ -7,6 +7,7 @@
   }
 })();
 
+let buttonEnabled = true;
 /**
  * Container class to manage connecting to the WebXR Device API
  * and handle rendering on every frame.
@@ -15,6 +16,7 @@ class App {
   /**
    * Run when the Start AR button is pressed.
    */
+  
   activateXR = async () => {
     try {
       // Initialize a WebXR session using "immersive-ar".
@@ -82,21 +84,20 @@ class App {
 
   onClickSelect = (event) => {
     // Prevent the event from propagating to the touch screen
+    if (!buttonEnabled) {
+      return;
+    }
+  
+    // Prevent the event from propagating to the touch screen
     event.stopPropagation();
+    event.preventDefault(); // Prevent the default click behavior
   
     this.xrSession.addEventListener("select", this.onSelect);
-    selectButton.addEventListener('touchstart', this.onTouchStart);
-
-    // Remove the click event listener from the button
-    selectButton.removeEventListener('click', this.onClickSelect);
-    
+  
+    // Disable the button to prevent further interactions
+    buttonEnabled = false;
+  
     console.log('Button clicked');
-  }
-
-  onTouchStart = (event) => {
-    event.preventDefault(); // Prevent default touch behavior
-    event.stopPropagation();
-    selectButton.removeEventListener('touchstart', this.onTouchStart);
   }
 
   /** Place a sunflower when the screen is tapped. */
@@ -111,6 +112,9 @@ class App {
       shadowMesh.position.y = clone.position.y;
       console.log('Select event handled');
       console.log(window.sunflower);
+
+      // Re-enable the button after handling the 'select' event
+    buttonEnabled = true;
     }
   }
 
