@@ -76,19 +76,15 @@ class App {
     //Comment
     const selectButton = document.getElementById('selectButton');
     selectButton.addEventListener('click', this.onClickSelect);
-
     console.log('XR session started');
   }
 
   onClickSelect = () => {
-   // Remove the 'click' event listener from the button
-   const selectButton = document.getElementById('selectButton');
-   selectButton.removeEventListener('click', this.onClickSelect);
-   
-   // Remove any existing 'select' event listeners outside the button click context
-   document.removeEventListener("select", this.onSelect);
-
-   console.log('Button clicked');
+    this.xrSession.addEventListener("select", this.onSelect);
+    const selectButton = document.getElementById('selectButton');
+    selectButton.removeEventListener('click', this.onClickSelect);
+     //this.xrSession.removeEventListener("select",this.onSelect);
+     console.log('Button clicked');
   }
 
   /** Place a sunflower when the screen is tapped. */
@@ -101,9 +97,8 @@ class App {
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
-
-      console.log('Select event handled');
     }
+    console.log('Select event handled');
   }
 
   /**
