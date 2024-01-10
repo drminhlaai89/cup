@@ -103,6 +103,7 @@ class App {
   onSelect = () => {
     if (window.sunflower) {
       console.log("App.js sunflower");
+      this.xrSession.removeEventListener("select", this.onSelect);
       const clone = window.sunflower.clone();
       clone.position.copy(this.reticle.position);
       this.scene.add(clone)
@@ -114,8 +115,6 @@ class App {
 
       // Re-enable the button after handling the 'select' event
     buttonEnabled = true;
-
-    this.xrSession.removeEventListener("select", this.onSelect);
     }
   }
 
@@ -151,10 +150,10 @@ class App {
       const hitTestResults = frame.getHitTestResults(this.hitTestSource);
 
       // If we have results, consider the environment stabilized.
-      if (!this.stabilized && hitTestResults.length > 0) {
-        this.stabilized = true;
-        document.body.classList.add('stabilized');
-      }
+      // if (!this.stabilized && hitTestResults.length > 0) {
+      //   this.stabilized = true;
+      //   document.body.classList.add('stabilized');
+      // }
       if (hitTestResults.length > 0) {
         const hitPose = hitTestResults[0].getPose(this.localReferenceSpace);
 
