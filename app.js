@@ -112,15 +112,22 @@ class App {
   onSelect = () => {
     if (this.isButtonSelectMode) {
       // Handle the select event only in button-select mode
-      if (window.sunflower) {
-        console.log("App.js sunflower");
-        const clone = window.sunflower.clone();
-        clone.position.copy(this.reticle.position);
-        this.scene.add(clone)
+      console.log("App.js sunflower");
+      const clone = window.sunflower.clone();
+      clone.position.copy(this.reticle.position);
+      this.scene.add(clone)
+
+      const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
+      shadowMesh.position.y = clone.position.y;
+      // if (window.sunflower) {
+      //   console.log("App.js sunflower");
+      //   const clone = window.sunflower.clone();
+      //   clone.position.copy(this.reticle.position);
+      //   this.scene.add(clone)
   
-        const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
-        shadowMesh.position.y = clone.position.y;
-      }
+      //   const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
+      //   shadowMesh.position.y = clone.position.y;
+      // }
       console.log('Select event handled');
     }
   }
