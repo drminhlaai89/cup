@@ -26,6 +26,9 @@ class App {
       // Create the canvas that will contain our camera's background and our virtual scene.
       this.createXRCanvas();
 
+      const selectButton = document.getElementById('selectButton');
+      selectButton.style.display = 'inline-block';
+
       // With everything set up, start the app.
       await this.onSessionStarted();
     } catch(e) {
@@ -41,8 +44,7 @@ class App {
     this.canvas = document.createElement("canvas");
     document.body.appendChild(this.canvas);
     this.gl = this.canvas.getContext("webgl", {xrCompatible: true});
-    const selectButton = document.getElementById('selectButton');
-    selectButton.style.display = 'inline-block';
+ 
     this.xrSession.updateRenderState({
       baseLayer: new XRWebGLLayer(this.xrSession, this.gl)
     });
