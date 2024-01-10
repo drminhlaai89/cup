@@ -122,40 +122,58 @@ class App {
   }
 
   enableRotation(object) {
-    let isDragging = false;
-    let previousTouchPosition = {
-      x: 0,
-      y: 0
+    let isPinching = false;
+    let initialPinchDistance = 0;
+    let previousTouchPosition = { x: 0, y: 0 };
+  
+    const calculateDistance = (touches) => {
+      const [touch1, touch2] = touches;
+      const dx = touch1.clientX - touch2.clientX;
+      const dy = touch1.clientY - touch2.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
     };
   
     const handleTouchStart = (event) => {
-      isDragging = true;
-      previousTouchPosition = {
-        x: event.touches[0].clientX,
-        y: event.touches[0].clientY
-      };
+      if (event.touches.length === 2) {
+        isPinching = true;
+        initialPinchDistance = calculateDistance(event.touches);
+      } else {
+        isPinching = false;
+        previousTouchPosition = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY
+        };
+      }
     };
   
     const handleTouchMove = (event) => {
-      if (!isDragging) return;
+      if (isPinching && event.touches.length === 2) {
+        const currentPinchDistance = calculateDistance(event.touches);
+        const scaleFactor = currentPinchDistance / initialPinchDistance;
   
-      const deltaMove = {
-        x: event.touches[0].clientX - previousTouchPosition.x,
-        y: event.touches[0].clientY - previousTouchPosition.y
-      };
+        // Scale the object based on pinch movement
+        object.scale.setScalar(scaleFactor);
   
-      // Rotate the object based on touch movement
-      object.rotation.y += deltaMove.x * 0.01;
-      object.rotation.x += deltaMove.y * 0.01;
+        initialPinchDistance = currentPinchDistance;
+      } else if (event.touches.length === 1) {
+        const deltaMove = {
+          x: event.touches[0].clientX - previousTouchPosition.x,
+          y: event.touches[0].clientY - previousTouchPosition.y
+        };
   
-      previousTouchPosition = {
-        x: event.touches[0].clientX,
-        y: event.touches[0].clientY
-      };
+        // Rotate the object based on touch movement
+        object.rotation.y += deltaMove.x * 0.01;
+        object.rotation.x += deltaMove.y * 0.01;
+  
+        previousTouchPosition = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY
+        };
+      }
     };
   
     const handleTouchEnd = () => {
-      isDragging = false;
+      isPinching = false;
     };
   
     document.addEventListener('touchstart', handleTouchStart, { passive: false });
