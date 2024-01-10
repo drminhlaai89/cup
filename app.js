@@ -91,6 +91,11 @@ class App {
     console.log('Button clicked');
   }
 
+  onTouchStart = (event) => {
+    event.preventDefault(); // Prevent default touch behavior
+    event.stopPropagation();
+  }
+
   /** Place a sunflower when the screen is tapped. */
   onSelect = () => {
     if (window.sunflower) {
