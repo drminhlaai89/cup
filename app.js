@@ -76,7 +76,7 @@ class App {
     //Comment
     const selectButton = document.getElementById('selectButton');
     selectButton.addEventListener('click', this.onClickSelect);
-    selectButton.addEventListener('touchstart', this.onTouchStart);
+  
      console.log('XR session started');
   }
 
@@ -85,16 +85,18 @@ class App {
     event.stopPropagation();
   
     this.xrSession.addEventListener("select", this.onSelect);
-  
+    selectButton.addEventListener('touchstart', this.onTouchStart);
+
     // Remove the click event listener from the button
     selectButton.removeEventListener('click', this.onClickSelect);
-    selectButton.removeEventListener('touchstart', this.onTouchStart);
+    
     console.log('Button clicked');
   }
 
   onTouchStart = (event) => {
     event.preventDefault(); // Prevent default touch behavior
     event.stopPropagation();
+    selectButton.removeEventListener('touchstart', this.onTouchStart);
   }
 
   /** Place a sunflower when the screen is tapped. */
