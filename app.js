@@ -79,13 +79,16 @@ class App {
      console.log('XR session started');
   }
 
-  onClickSelect = () => {
+  onClickSelect = (event) => {
+    // Prevent the event from propagating to the touch screen
+    event.stopPropagation();
+  
     this.xrSession.addEventListener("select", this.onSelect);
-    const selectButton = document.getElementById('selectButton');
+  
+    // Remove the click event listener from the button
     selectButton.removeEventListener('click', this.onClickSelect);
-     //this.xrSession.removeEventListener("select",this.onSelect);
-
-      console.log('Button clicked');
+  
+    console.log('Button clicked');
   }
 
   /** Place a sunflower when the screen is tapped. */
