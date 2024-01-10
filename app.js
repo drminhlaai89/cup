@@ -76,6 +76,7 @@ class App {
     //Comment
     const selectButton = document.getElementById('selectButton');
     selectButton.addEventListener('click', this.onClickSelect);
+    selectButton.addEventListener('touchstart', this.onTouchStart);
      console.log('XR session started');
   }
 
@@ -87,7 +88,7 @@ class App {
   
     // Remove the click event listener from the button
     selectButton.removeEventListener('click', this.onClickSelect);
-  
+    selectButton.removeEventListener('touchstart', this.onTouchStart);
     console.log('Button clicked');
   }
 
