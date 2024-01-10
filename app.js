@@ -72,6 +72,7 @@ class App {
     // Start a rendering loop using this.onXRFrame.
     this.xrSession.requestAnimationFrame(this.onXRFrame);
 
+    //Comment
     // const selectButton = document.getElementById('selectButton');
     // selectButton.addEventListener('click', this.onClickSelect);
 

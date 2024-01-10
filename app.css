@@ -67,7 +67,7 @@ body {
     border-radius: 0.1em;
   }
 
-  #selectButton {
+  /* #selectButton {
     display: none;
     position: fixed;
     bottom: 20px; 
@@ -80,7 +80,7 @@ body {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-}
+} */
 
 #selectButton:hover {
   background-color: #45a049;
