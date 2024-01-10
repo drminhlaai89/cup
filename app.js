@@ -114,6 +114,8 @@ class App {
 
       // Re-enable the button after handling the 'select' event
     buttonEnabled = true;
+
+    this.xrSession.removeEventListener("select", this.onSelect);
     }
   }
 
