@@ -80,39 +80,49 @@ class App {
   }
 
   onClickSelect = () => {
-    // Remove the click event listener from the button
-    const selectButton = document.getElementById('selectButton');
-    selectButton.removeEventListener('click', this.onClickSelect);
+   // Remove the click event listener from the button
+   const selectButton = document.getElementById('selectButton');
+   selectButton.removeEventListener('click', this.onClickSelect);
 
-    // Add the select event listener to xrSession only if it doesn't exist
-    if (!this.selectEventListenerAdded) {
-        this.xrSession.addEventListener("select", this.onSelect);
-        this.selectEventListenerAdded = true;
-    }
+   // Add a flag to track whether the XR session is in button-select mode
+   this.isButtonSelectMode = true;
 
-    // Add a one-time click event listener to document to prevent other click events
-    document.addEventListener('click', this.onDocumentClickOnce, { once: true });
+   // Add the select event listener to xrSession
+   this.xrSession.addEventListener("select", this.onSelect);
+
+    // Add a one-time click event listener to document to exit button-select mode
+    document.addEventListener('click', this.onDocumentClickOnce);
+
      console.log('Button clicked');
   }
 
   onDocumentClickOnce = () => {
     // Remove the select event listener from the xrSession after the document click
-    this.xrSession.removeEventListener("select", this.onSelect);
-    this.selectEventListenerAdded = false;
+    if (this.isButtonSelectMode) {
+      // Remove the select event listener from the xrSession
+      this.xrSession.removeEventListener("select", this.onSelect);
+      this.isButtonSelectMode = false;
+
+      // Remove the click event listener from the document
+      document.removeEventListener('click', this.onDocumentClickOnce);
+  }
 }
 
   /** Place a sunflower when the screen is tapped. */
   onSelect = () => {
-    if (window.sunflower) {
-      console.log("App.js sunflower");
-      const clone = window.sunflower.clone();
-      clone.position.copy(this.reticle.position);
-      this.scene.add(clone)
-
-      const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
-      shadowMesh.position.y = clone.position.y;
+    if (this.isButtonSelectMode) {
+      // Handle the select event only in button-select mode
+      if (window.sunflower) {
+        console.log("App.js sunflower");
+        const clone = window.sunflower.clone();
+        clone.position.copy(this.reticle.position);
+        this.scene.add(clone)
+  
+        const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
+        shadowMesh.position.y = clone.position.y;
+      }
+      console.log('Select event handled');
     }
-    console.log('Select event handled');
   }
 
   /**
