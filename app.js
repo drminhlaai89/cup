@@ -91,7 +91,7 @@ class App {
    this.xrSession.addEventListener("select", this.onSelect);
 
     // Add a one-time click event listener to document to exit button-select mode
-    document.addEventListener('click', this.onDocumentClickOnce);
+    //document.addEventListener('click', this.onDocumentClickOnce);
 
      console.log('Button clicked');
   }
