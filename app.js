@@ -79,10 +79,12 @@ class App {
   }
 
   onClickSelect = () => {
-    this.xrSession.addEventListener("select", this.onSelect);
-    const selectButton = document.getElementById('selectButton');
-    selectButton.removeEventListener('click', this.onClickSelect);
-    // this.xrSession.removeEventListener("select",this.onSelect);
+   // Remove the 'click' event listener from the button
+   const selectButton = document.getElementById('selectButton');
+   selectButton.removeEventListener('click', this.onClickSelect);
+   
+   // Remove any existing 'select' event listeners outside the button click context
+   document.removeEventListener("select", this.onSelect);
   }
 
   /** Place a sunflower when the screen is tapped. */
