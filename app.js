@@ -108,6 +108,9 @@ class App {
       clone.position.copy(this.reticle.position);
       this.scene.add(clone)
 
+      // Enable rotation for the spawned object
+    this.enableRotation(clone);
+
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
       console.log('Select event handled');
@@ -116,6 +119,48 @@ class App {
       // Re-enable the button after handling the 'select' event
     buttonEnabled = true;
     }
+  }
+
+  enableRotation(object) {
+    let isDragging = false;
+    let previousTouchPosition = {
+      x: 0,
+      y: 0
+    };
+  
+    const handleTouchStart = (event) => {
+      isDragging = true;
+      previousTouchPosition = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY
+      };
+    };
+  
+    const handleTouchMove = (event) => {
+      if (!isDragging) return;
+  
+      const deltaMove = {
+        x: event.touches[0].clientX - previousTouchPosition.x,
+        y: event.touches[0].clientY - previousTouchPosition.y
+      };
+  
+      // Rotate the object based on touch movement
+      object.rotation.y += deltaMove.x * 0.01;
+      object.rotation.x += deltaMove.y * 0.01;
+  
+      previousTouchPosition = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY
+      };
+    };
+  
+    const handleTouchEnd = () => {
+      isDragging = false;
+    };
+  
+    document.addEventListener('touchstart', handleTouchStart, { passive: false });
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd, { passive: false });
   }
 
   /**
