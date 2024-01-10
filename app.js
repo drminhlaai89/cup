@@ -112,7 +112,7 @@ class App {
   onSelect = () => {
       // Handle the select event only in button-select mod
       if (window.sunflower) {
-        if (this.isButtonSelectMode) {
+        // if (this.isButtonSelectMode) {
           console.log("App.js sunflower");
           const clone = window.sunflower.clone();
           clone.position.copy(this.reticle.position);
@@ -120,7 +120,6 @@ class App {
     
           const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
           shadowMesh.position.y = clone.position.y;
-        }
         console.log('Select event handled');
       }
   }
