@@ -75,11 +75,10 @@ class App {
     const selectButton = document.getElementById('selectButton');
     selectButton.addEventListener('click', () => {
         // Manually dispatch the 'select' event when the button is clicked
-        const selectEvent = new Event('select');
-        this.xrSession.dispatchEvent(selectEvent);
+        // const selectEvent = new Event('select');
+        // this.xrSession.dispatchEvent(selectEvent);
+        this.xrSession.addEventListener("select", this.onSelect);
     });
-
-    //this.xrSession.addEventListener("select", this.onSelect);
   }
 
   /** Place a sunflower when the screen is tapped. */
