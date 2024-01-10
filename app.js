@@ -73,12 +73,13 @@ class App {
     this.xrSession.requestAnimationFrame(this.onXRFrame);
 
     const selectButton = document.getElementById('selectButton');
-    selectButton.addEventListener('click', () => {
-        // Manually dispatch the 'select' event when the button is clicked
-        // const selectEvent = new Event('select');
-        // this.xrSession.dispatchEvent(selectEvent);
-        this.xrSession.addEventListener("select", this.onSelect);
-    });
+    selectButton.addEventListener('click', this.onClickSelect);
+  }
+
+  onClickSelect = () => {
+    this.xrSession.addEventListener("select", this.onSelect);
+    const selectButton = document.getElementById('selectButton');
+    selectButton.removeEventListener('click', this.onClickSelect);
   }
 
   /** Place a sunflower when the screen is tapped. */
