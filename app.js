@@ -90,7 +90,6 @@ class App {
   
     // Prevent the event from propagating to the touch screen
     event.stopPropagation();
-    event.preventDefault(); // Prevent the default click behavior
   
     this.xrSession.addEventListener("select", this.onSelect);
   
