@@ -79,7 +79,7 @@ class App {
         this.xrSession.dispatchEvent(selectEvent);
     });
 
-    this.xrSession.addEventListener("select", this.onSelect);
+    //this.xrSession.addEventListener("select", this.onSelect);
   }
 
   /** Place a sunflower when the screen is tapped. */
