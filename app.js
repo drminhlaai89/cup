@@ -25,6 +25,8 @@ class App {
 
       // Create the canvas that will contain our camera's background and our virtual scene.
       this.createXRCanvas();
+      const selectButton = document.getElementById('selectButton');
+      selectButton.style.display = 'inline-block';
 
       // With everything set up, start the app.
       await this.onSessionStarted();
@@ -70,7 +72,10 @@ class App {
     // Start a rendering loop using this.onXRFrame.
     this.xrSession.requestAnimationFrame(this.onXRFrame);
 
-    this.xrSession.addEventListener("select", this.onSelect);
+      // Attach click event listener to the button
+  const selectButton = document.getElementById('selectButton');
+  selectButton.addEventListener('select', this.onSelect);
+    //this.xrSession.addEventListener("select", this.onSelect);
   }
 
   /** Place a sunflower when the screen is tapped. */
