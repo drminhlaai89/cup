@@ -67,10 +67,10 @@ body {
     border-radius: 0.1em;
   }
 
-  #selectButton {
+  /* #selectButton {
     display: none;
     position: fixed;
-    bottom: 20px; /* Adjust this value to set the distance from the bottom */
+    bottom: 20px; 
     left: 50%;
     transform: translateX(-50%);
     font-size: 2em;
@@ -84,7 +84,7 @@ body {
 
 #selectButton:hover {
   background-color: #45a049;
-}
+} */
   
   /* #stabilization {
     background-image: url(../assets/stabilization.gif);
