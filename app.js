@@ -107,6 +107,7 @@ class App {
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
       console.log('Select event handled');
+      console.log(window.sunflower);
     }
   }
 
