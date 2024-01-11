@@ -16,6 +16,13 @@ class App {
   /**
    * Run when the Start AR button is pressed.
    */
+
+  constructor() {
+    // Initialize an array to store spawned objects
+    this.spawnedObjects = [];
+    // Flag to track if a specific object is selected
+    this.selectedObject = null;
+  }
   
   activateXR = async () => {
     try {
@@ -107,9 +114,13 @@ class App {
       const clone = window.sunflower.clone();
       clone.position.copy(this.reticle.position);
       this.scene.add(clone)
+      this.spawnedObjects.push(clone);
 
       // Enable rotation for the spawned object
     this.enableRotation(clone);
+
+     // Set the selected object to the newly spawned clone
+     this.selectedObject = clone;
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
@@ -158,13 +169,16 @@ class App {
   
         initialPinchDistance = currentPinchDistance;
       } else if (event.touches.length === 1 && !isScaling) {
-        const deltaMove = {
-          x: event.touches[0].clientX - previousTouchPosition.x,
-          y: event.touches[0].clientY - previousTouchPosition.y
-        };
-  
-        object.rotation.y += deltaMove.x * 0.01;
-        object.rotation.x += deltaMove.y * 0.01;
+        // Apply rotation only to the selected object
+        if (this.selectedObject) {
+          const deltaMove = {
+            x: event.touches[0].clientX - previousTouchPosition.x,
+            y: event.touches[0].clientY - previousTouchPosition.y,
+          };
+
+          this.selectedObject.rotation.y += deltaMove.x * 0.01;
+          this.selectedObject.rotation.x += deltaMove.y * 0.01;
+        }
   
         previousTouchPosition = {
           x: event.touches[0].clientX,
