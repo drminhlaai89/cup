@@ -275,6 +275,7 @@ class App {
     console.log("Selected object: ", object);
     // For example, change the color or display info
     // object.material.color.set(0xff0000);
+    this.enableRotation(clone);
   }
 
   /**
