@@ -16,17 +16,6 @@ class App {
   /**
    * Run when the Start AR button is pressed.
    */
-
-  constructor() {
-    // ... existing constructor code ...
-    this.spawnedObjects = []; // Array to keep track of spawned (interactive) objects
-    this.raycaster = new THREE.Raycaster(); // Raycaster for object selection
-    this.setupTouchEventListener(); // Setup the touch event listener
-  }
-
-  setupTouchEventListener() {
-    document.addEventListener('touchstart', (event) => this.onTouchStart(event), false);
-  }
   
   activateXR = async () => {
     try {
@@ -93,24 +82,6 @@ class App {
     console.log('XR session started');
   }
 
-  onTouchStart(event) {
-    event.preventDefault();
-
-    const touchX = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
-    const touchY = - (event.touches[0].clientY / window.innerHeight) * 2 + 1;
-
-    // Set the raycaster from the camera and touch coordinates
-    this.raycaster.setFromCamera({ x: touchX, y: touchY }, this.camera);
-
-    // Check for intersections with only the spawned (interactive) objects
-    const intersects = this.raycaster.intersectObjects(this.spawnedObjects);
-
-    if (intersects.length > 0) {
-      console.log("Touched object:", intersects[0].object);
-      // Handle object selection here, e.g., highlight the object or display info
-    }
-  }
-
   onClickSelect = (event) => {
     // Prevent the event from propagating to the touch screen
     if (!buttonEnabled) {
@@ -136,9 +107,6 @@ class App {
       const clone = window.sunflower.clone();
       clone.position.copy(this.reticle.position);
       this.scene.add(clone)
-
-      // Add the cloned object to the array of spawned (interactive) objects
-      this.spawnedObjects.push(clone);
 
       // Enable rotation for the spawned object
     this.enableRotation(clone);
