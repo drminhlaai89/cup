@@ -161,13 +161,17 @@ class App {
   
     const handleTouchMove = (event) => {
       if (isScaling && event.touches.length === 2) {
-        const currentPinchDistance = calculateDistance(event.touches);
-        const distanceChange = currentPinchDistance - initialPinchDistance;
-        const scaleFactor = object.scale.x * (1 + distanceChange * scaleSensitivity);
+        if(this.selectedObject)
+        {
+          const currentPinchDistance = calculateDistance(event.touches);
+          const distanceChange = currentPinchDistance - initialPinchDistance;
+          const scaleFactor = object.scale.x * (1 + distanceChange * scaleSensitivity);
   
-        object.scale.setScalar(scaleFactor);
+          object.scale.setScalar(scaleFactor);
   
-        initialPinchDistance = currentPinchDistance;
+          initialPinchDistance = currentPinchDistance;
+        }
+        
       } else if (event.touches.length === 1 && !isScaling) {
         // Apply rotation only to the selected object
         if (this.selectedObject) {
