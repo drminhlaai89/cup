@@ -21,7 +21,7 @@ class App {
     // Initialize an array to store spawned objects
     this.spawnedObjects = [];
     // Flag to track if a specific object is selected
-    this.selectedObjects = new Set();
+    this.selectedObject = null;
   }
   
   activateXR = async () => {
@@ -165,7 +165,7 @@ class App {
         const distanceChange = currentPinchDistance - initialPinchDistance;
 
          // Apply scaling only to the selected object
-        if (this.selectedObjects.has(object))
+        if (this.selectedObjects)
         {
           const scaleFactor = object.scale.x * (1 + distanceChange * scaleSensitivity);
   
@@ -176,7 +176,7 @@ class App {
         initialPinchDistance = currentPinchDistance;
       } else if (event.touches.length === 1 && !isScaling) {
         // Apply rotation only to the selected object
-        if (this.selectedObject.has(object)) {
+        if (this.selectedObject) {
           const deltaMove = {
             x: event.touches[0].clientX - previousTouchPosition.x,
             y: event.touches[0].clientY - previousTouchPosition.y,
