@@ -85,9 +85,44 @@ class App {
     //Comment
     const selectButton = document.getElementById('selectButton');
     selectButton.addEventListener('click', this.onClickSelect);
+
+    this.canvas.addEventListener('touchstart', this.handleTouchSelect);
   
     console.log('XR session started');
   }
+
+  handleTouchSelect = (event) => {
+    event.preventDefault();
+  
+    if (event.touches.length > 0) {
+      const touch = event.touches[0];
+      const selectedObject = this.performRaycast(touch);
+  
+      if (selectedObject && this.spawnedObjects.includes(selectedObject)) {
+        this.selectedObject = selectedObject;
+        console.log('Đối tượng được chọn:', this.selectedObject);
+  
+        // Bạn có thể thực hiện các hành động trên đối tượng đã chọn
+        // Ví dụ, kích hoạt xoay, phóng to/thu nhỏ, v.v.
+      }
+    }
+  };
+
+  performRaycast = (touch) => {
+    // Chuyển đổi điểm chạm thành tọa độ chuẩn hóa
+    const x = (touch.clientX / window.innerWidth) * 2 - 1;
+    const y = -(touch.clientY / window.innerHeight) * 2 + 1;
+  
+    // Tạo một raycaster
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera({ x, y }, this.camera);
+  
+    // Thực hiện raycasting
+    const intersects = raycaster.intersectObjects(this.spawnedObjects);
+  
+    // Trả về đối tượng giao cắt đầu tiên (nếu có)
+    return intersects.length > 0 ? intersects[0].object : null;
+  };
 
   onClickSelect = (event) => {
     // Prevent the event from propagating to the touch screen
