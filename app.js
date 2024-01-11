@@ -123,66 +123,70 @@ class App {
 
   enableRotation(object) {
     let isScaling = false;
-  let initialPinchDistance = 0;
-  let previousTouchPosition = { x: 0, y: 0 };
-  let scaleSensitivity = 0.005; // Adjust this factor for smoother or faster scaling
-
-  const calculateDistance = (touches) => {
-    const [touch1, touch2] = touches;
-    const dx = touch1.clientX - touch2.clientX;
-    const dy = touch1.clientY - touch2.clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-  };
-
-  const handleTouchStart = (event) => {
-    if (event.touches.length === 2) {
-      isScaling = true;
-      initialPinchDistance = calculateDistance(event.touches);
-    } else {
+    let initialPinchDistance = 0;
+    let previousTouchPosition = { x: 0, y: 0 };
+    let scaleSensitivity = 0.005; // Adjust this factor for smoother or faster scaling
+  
+    const calculateDistance = (touches) => {
+      const [touch1, touch2] = touches;
+      const dx = touch1.clientX - touch2.clientX;
+      const dy = touch1.clientY - touch2.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    };
+  
+    const handleTouchStart = (event) => {
+      if (event.touches.length === 2) {
+        isScaling = true;
+        initialPinchDistance = calculateDistance(event.touches);
+      } else {
+        isScaling = false;
+        previousTouchPosition = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY
+        };
+      }
+    };
+  
+    const handleTouchMove = (event) => {
+      if (event.touches.length !== 2) {
+        isScaling = false; // Reset scaling if not exactly two fingers
+      }
+  
+      if (isScaling && event.touches.length === 2) {
+        const currentPinchDistance = calculateDistance(event.touches);
+        const distanceChange = currentPinchDistance - initialPinchDistance;
+  
+        // Adjust sensitivity for smoother scaling
+        const scaleFactor = 1 + distanceChange * scaleSensitivity;
+  
+        // Scale the object based on pinch movement
+        object.scale.setScalar(scaleFactor);
+  
+        initialPinchDistance = currentPinchDistance;
+      } else if (event.touches.length === 1) {
+        const deltaMove = {
+          x: event.touches[0].clientX - previousTouchPosition.x,
+          y: event.touches[0].clientY - previousTouchPosition.y
+        };
+  
+        // Rotate the object based on touch movement
+        object.rotation.y += deltaMove.x * 0.01;
+        object.rotation.x += deltaMove.y * 0.01;
+  
+        previousTouchPosition = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY
+        };
+      }
+    };
+  
+    const handleTouchEnd = () => {
       isScaling = false;
-      previousTouchPosition = {
-        x: event.touches[0].clientX,
-        y: event.touches[0].clientY
-      };
-    }
-  };
-
-  const handleTouchMove = (event) => {
-    if (isScaling && event.touches.length === 2) {
-      const currentPinchDistance = calculateDistance(event.touches);
-      const distanceChange = currentPinchDistance - initialPinchDistance;
-
-      // Adjust sensitivity for smoother scaling
-      const scaleFactor = 1 + distanceChange * scaleSensitivity;
-
-      // Scale the object based on pinch movement
-      object.scale.setScalar(scaleFactor);
-
-      initialPinchDistance = currentPinchDistance;
-    } else if (!isScaling && event.touches.length === 1) {
-      const deltaMove = {
-        x: event.touches[0].clientX - previousTouchPosition.x,
-        y: event.touches[0].clientY - previousTouchPosition.y
-      };
-
-      // Rotate the object based on touch movement
-      object.rotation.y += deltaMove.x * 0.01;
-      object.rotation.x += deltaMove.y * 0.01;
-
-      previousTouchPosition = {
-        x: event.touches[0].clientX,
-        y: event.touches[0].clientY
-      };
-    }
-  };
-
-  const handleTouchEnd = () => {
-    isScaling = false;
-  };
-
-  document.addEventListener('touchstart', handleTouchStart, { passive: false });
-  document.addEventListener('touchmove', handleTouchMove, { passive: false });
-  document.addEventListener('touchend', handleTouchEnd, { passive: false });
+    };
+  
+    document.addEventListener('touchstart', handleTouchStart, { passive: false });
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd, { passive: false });
   }
 
   /**
