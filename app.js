@@ -119,6 +119,18 @@ class App {
       // Enable rotation for the spawned object
     this.enableRotation(clone);
 
+    // Perform a raycast to check if any object is intersected with the reticle
+    const raycaster = new THREE.Raycaster();
+    const intersections = this.getIntersections(raycaster);
+
+    if (intersections.length > 0) {
+      // Get the first intersected object
+      const selectedObject = intersections[0].object;
+
+      // Perform your selection logic here
+      this.handleObjectSelection(selectedObject);
+    }
+
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
 
@@ -131,6 +143,27 @@ class App {
     buttonEnabled = true;
     }
   }
+
+  // Perform raycasting to check for intersections with objects
+getIntersections(raycaster) {
+  // Update the raycaster with the reticle's position and direction
+  raycaster.setFromCamera({ x: 0, y: 0 }, this.camera);
+
+  // Perform the raycast against the spawned objects
+  return raycaster.intersectObjects(this.spawnedObjects, true);
+}
+
+// Handle the selection of an object
+handleObjectSelection(selectedObject) {
+  console.log('Object selected:', selectedObject);
+
+  // Example: Change the color of the selected object
+  const selectedMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  selectedObject.material = selectedMaterial;
+
+  // You can implement further actions here based on the selected object
+  // For example, change its color, scale, or perform other interactions.
+}
 
   //Enable rotation and Scaling
   enableRotation(object) {
