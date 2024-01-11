@@ -125,7 +125,7 @@ class App {
     let isScaling = false;
     let initialPinchDistance = 0;
     let previousTouchPosition = { x: 0, y: 0 };
-    let scaleSensitivity = 0.005; // Adjust this factor for smoother or faster scaling
+    let scaleSensitivity = 0.05;
   
     const calculateDistance = (touches) => {
       const [touch1, touch2] = touches;
@@ -148,28 +148,20 @@ class App {
     };
   
     const handleTouchMove = (event) => {
-      if (event.touches.length !== 2) {
-        isScaling = false; // Reset scaling if not exactly two fingers
-      }
-  
       if (isScaling && event.touches.length === 2) {
         const currentPinchDistance = calculateDistance(event.touches);
         const distanceChange = currentPinchDistance - initialPinchDistance;
+        const scaleFactor = object.scale.x * (1 + distanceChange * scaleSensitivity);
   
-        // Adjust sensitivity for smoother scaling
-        const scaleFactor = 1 + distanceChange * scaleSensitivity;
-  
-        // Scale the object based on pinch movement
         object.scale.setScalar(scaleFactor);
   
         initialPinchDistance = currentPinchDistance;
-      } else if (event.touches.length === 1) {
+      } else if (event.touches.length === 1 && !isScaling) {
         const deltaMove = {
           x: event.touches[0].clientX - previousTouchPosition.x,
           y: event.touches[0].clientY - previousTouchPosition.y
         };
   
-        // Rotate the object based on touch movement
         object.rotation.y += deltaMove.x * 0.01;
         object.rotation.x += deltaMove.y * 0.01;
   
