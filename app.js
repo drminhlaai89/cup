@@ -116,11 +116,15 @@ class App {
       this.scene.add(clone)
       this.spawnedObjects.push(clone);
 
+      console.log(this.spawnedObjects);
+
       // Enable rotation for the spawned object
     this.enableRotation(clone);
 
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
+
+      console.log(this.selectedObject);
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
@@ -249,35 +253,6 @@ class App {
     }
   }
 
-  onUserInput(event) {
-    // Convert the 2D screen coordinates to 3D space
-    const mouse = new THREE.Vector2();
-    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-    // Update the raycaster
-    this.raycaster.setFromCamera(mouse, this.camera);
-
-    // Check for intersections
-    const intersects = this.raycaster.intersectObjects(this.scene.children);
-
-    if (intersects.length > 0) {
-      // Get the first intersected object
-      const selectedObject = intersects[0].object;
-
-      // Handle the selection
-      this.handleObjectSelection(selectedObject);
-    }
-  }
-
-  handleObjectSelection(object) {
-    // Your logic for what happens when an object is selected
-    console.log("Selected object: ", object);
-    // For example, change the color or display info
-    // object.material.color.set(0xff0000);
-    this.enableRotation(clone);
-  }
-
   /**
    * Initialize three.js specific rendering code, including a WebGLRenderer,
    * a demo scene, and a camera for viewing the 3D content.
@@ -294,9 +269,6 @@ class App {
     this.renderer.autoClear = false;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-     // Initialize raycaster
-    this.raycaster = new THREE.Raycaster();
 
     // Initialize our demo scene.
     this.scene = DemoUtils.createLitScene();
