@@ -125,7 +125,7 @@ class App {
     let isScaling = false;
     let initialPinchDistance = 0;
     let previousTouchPosition = { x: 0, y: 0 };
-    let scaleSensitivity = 0.05;
+    let scaleSensitivity = 0.01;
   
     const calculateDistance = (touches) => {
       const [touch1, touch2] = touches;
