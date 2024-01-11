@@ -119,18 +119,6 @@ class App {
       // Enable rotation for the spawned object
     this.enableRotation(clone);
 
-    // Perform a raycast to check if any object is intersected with the reticle
-    const raycaster = new THREE.Raycaster();
-    const intersections = this.getIntersections(raycaster);
-
-    if (intersections.length > 0) {
-      // Get the first intersected object
-      const selectedObject = intersections[0].object;
-
-      // Perform your selection logic here
-      this.handleObjectSelection(selectedObject);
-    }
-
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
 
@@ -143,27 +131,6 @@ class App {
     buttonEnabled = true;
     }
   }
-
-  // Perform raycasting to check for intersections with objects
-getIntersections(raycaster) {
-  // Update the raycaster with the reticle's position and direction
-  raycaster.setFromCamera({ x: 0, y: 0 }, this.camera);
-
-  // Perform the raycast against the spawned objects
-  return raycaster.intersectObjects(this.spawnedObjects, true);
-}
-
-// Handle the selection of an object
-handleObjectSelection(selectedObject) {
-  console.log('Object selected:', selectedObject);
-
-  // Example: Change the color of the selected object
-  const selectedMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-  selectedObject.material = selectedMaterial;
-
-  // You can implement further actions here based on the selected object
-  // For example, change its color, scale, or perform other interactions.
-}
 
   //Enable rotation and Scaling
   enableRotation(object) {
@@ -282,6 +249,34 @@ handleObjectSelection(selectedObject) {
     }
   }
 
+  onUserInput(event) {
+    // Convert the 2D screen coordinates to 3D space
+    const mouse = new THREE.Vector2();
+    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    // Update the raycaster
+    this.raycaster.setFromCamera(mouse, this.camera);
+
+    // Check for intersections
+    const intersects = this.raycaster.intersectObjects(this.scene.children);
+
+    if (intersects.length > 0) {
+      // Get the first intersected object
+      const selectedObject = intersects[0].object;
+
+      // Handle the selection
+      this.handleObjectSelection(selectedObject);
+    }
+  }
+
+  handleObjectSelection(object) {
+    // Your logic for what happens when an object is selected
+    console.log("Selected object: ", object);
+    // For example, change the color or display info
+    // object.material.color.set(0xff0000);
+  }
+
   /**
    * Initialize three.js specific rendering code, including a WebGLRenderer,
    * a demo scene, and a camera for viewing the 3D content.
@@ -298,6 +293,9 @@ handleObjectSelection(selectedObject) {
     this.renderer.autoClear = false;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+     // Initialize raycaster
+    this.raycaster = new THREE.Raycaster();
 
     // Initialize our demo scene.
     this.scene = DemoUtils.createLitScene();
