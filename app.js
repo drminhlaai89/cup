@@ -84,34 +84,38 @@ class App {
 
     //Comment
     const selectButton = document.getElementById('selectButton');
-    selectButton.addEventListener('click', (event) =>  this.onClickSelect(event, frame));
+    selectButton.addEventListener('click', this.onClickSelect);
   
     console.log('XR session started');
   }
 
-  onClickSelect = (event,frame) => {
+  onClickSelect = async (event) => {
     // Prevent the event from propagating to the touch screen
     if (!buttonEnabled) {
       return;
     }
+
+    try {
+      const frame = await this.xrSession.requestAnimationFrame();
+      const hitTestResults = frame.getHitTestResults(this.hitTestSource);
+
+      if (hitTestResults.length > 0) {
+        const hitPose = hitTestResults[0].getPose(this.localReferenceSpace);
+
+        // Check for intersections with spawned objects
+        const intersectedObject = this.getIntersectedObject(hitPose.position);
+
+        if (intersectedObject) {
+          // Handle selection logic for the intersected object
+          this.onObjectSelected(intersectedObject);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
   
     // Prevent the event from propagating to the touch screen
     event.stopPropagation();
-
-    const hitTestResults = frame.getHitTestResults(this.hitTestSource);
-
-   if (hitTestResults.length > 0) {
-      const hitPose = hitTestResults[0].getPose(this.localReferenceSpace);
-      const hitPosition = new THREE.Vector3().setFromMatrixPosition(hitPose.transform.matrix);
-
-      // Check for intersections with spawned objects
-      const intersectedObject = this.getIntersectedObject(hitPosition);
-
-      if (intersectedObject) {
-         // Handle selection logic for the intersected object
-         this.onObjectSelected(intersectedObject);
-      }
-   }
   
     this.xrSession.addEventListener("select", this.onSelect);
   
@@ -150,8 +154,7 @@ class App {
       this.xrSession.removeEventListener("select", this.onSelect);
       const clone = window.sunflower.clone();
       clone.position.copy(this.reticle.position);
-      this.scene.add(clone);
-      clone.name = 'object' + this.spawnedObjects.length;
+      this.scene.add(clone)
       this.spawnedObjects.push(clone);
 
       // Enable rotation for the spawned object
