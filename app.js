@@ -161,13 +161,12 @@ class App {
   
     const handleTouchMove = (event) => {
       if (isScaling && event.touches.length === 2) {
-        
-        if(this.selectedObject)
-        {
+        // Check if the current object matches the selected object
+        if (object === this.selectedObject) {
           const currentPinchDistance = calculateDistance(event.touches);
           const distanceChange = currentPinchDistance - initialPinchDistance;
           const scaleFactor = object.scale.x * (1 + distanceChange * scaleSensitivity);
-  
+    
           object.scale.setScalar(scaleFactor);
           initialPinchDistance = currentPinchDistance;
         }
@@ -178,11 +177,11 @@ class App {
             x: event.touches[0].clientX - previousTouchPosition.x,
             y: event.touches[0].clientY - previousTouchPosition.y,
           };
-
+    
           this.selectedObject.rotation.y += deltaMove.x * 0.01;
           this.selectedObject.rotation.x += deltaMove.y * 0.01;
         }
-  
+    
         previousTouchPosition = {
           x: event.touches[0].clientX,
           y: event.touches[0].clientY
