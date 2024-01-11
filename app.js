@@ -97,6 +97,21 @@ class App {
   
     // Prevent the event from propagating to the touch screen
     event.stopPropagation();
+
+    const hitTestResults = frame.getHitTestResults(this.hitTestSource);
+
+   if (hitTestResults.length > 0) {
+      const hitPose = hitTestResults[0].getPose(this.localReferenceSpace);
+      const hitPosition = new THREE.Vector3().setFromMatrixPosition(hitPose.transform.matrix);
+
+      // Check for intersections with spawned objects
+      const intersectedObject = this.getIntersectedObject(hitPosition);
+
+      if (intersectedObject) {
+         // Handle selection logic for the intersected object
+         this.onObjectSelected(intersectedObject);
+      }
+   }
   
     this.xrSession.addEventListener("select", this.onSelect);
   
@@ -106,6 +121,28 @@ class App {
     console.log('Button clicked');
   }
 
+  getIntersectedObject(hitPosition) {
+    // Raycasting to find intersected object
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(hitPosition, this.camera);
+    const intersects = raycaster.intersectObjects(this.spawnedObjects, true);
+ 
+    if (intersects.length > 0) {
+       return intersects[0].object;
+    }
+ 
+    return null;
+ }
+
+ onObjectSelected(selectedObject) {
+  // Handle the selection logic for the selected object
+  // For example, change color or perform any specific action
+  console.log('Object selected:', selectedObject.name);
+
+  // Enable rotation for the selected object
+  this.enableRotation(selectedObject);
+}
+
   /** Place a sunflower when the screen is tapped. */
   onSelect = () => {
     if (window.sunflower) {
@@ -113,7 +150,8 @@ class App {
       this.xrSession.removeEventListener("select", this.onSelect);
       const clone = window.sunflower.clone();
       clone.position.copy(this.reticle.position);
-      this.scene.add(clone)
+      this.scene.add(clone);
+      clone.name = 'object' + this.spawnedObjects.length;
       this.spawnedObjects.push(clone);
 
       // Enable rotation for the spawned object
