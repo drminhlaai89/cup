@@ -89,29 +89,10 @@ class App {
     console.log('XR session started');
   }
 
-  onClickSelect = async (event) => {
+  onClickSelect = (event) => {
     // Prevent the event from propagating to the touch screen
     if (!buttonEnabled) {
       return;
-    }
-
-    try {
-      const frame = await this.xrSession.requestAnimationFrame();
-      const hitTestResults = frame.getHitTestResults(this.hitTestSource);
-
-      if (hitTestResults.length > 0) {
-        const hitPose = hitTestResults[0].getPose(this.localReferenceSpace);
-
-        // Check for intersections with spawned objects
-        const intersectedObject = this.getIntersectedObject(hitPose.position);
-
-        if (intersectedObject) {
-          // Handle selection logic for the intersected object
-          this.onObjectSelected(intersectedObject);
-        }
-      }
-    } catch (e) {
-      console.error(e);
     }
   
     // Prevent the event from propagating to the touch screen
@@ -124,28 +105,6 @@ class App {
   
     console.log('Button clicked');
   }
-
-  getIntersectedObject(hitPosition) {
-    // Raycasting to find intersected object
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(hitPosition, this.camera);
-    const intersects = raycaster.intersectObjects(this.spawnedObjects, true);
- 
-    if (intersects.length > 0) {
-       return intersects[0].object;
-    }
- 
-    return null;
- }
-
- onObjectSelected(selectedObject) {
-  // Handle the selection logic for the selected object
-  // For example, change color or perform any specific action
-  console.log('Object selected:', selectedObject.name);
-
-  // Enable rotation for the selected object
-  this.enableRotation(selectedObject);
-}
 
   /** Place a sunflower when the screen is tapped. */
   onSelect = () => {
@@ -160,6 +119,18 @@ class App {
       // Enable rotation for the spawned object
     this.enableRotation(clone);
 
+    // Perform a raycast to check if any object is intersected with the reticle
+    const raycaster = new THREE.Raycaster();
+    const intersections = this.getIntersections(raycaster);
+
+    if (intersections.length > 0) {
+      // Get the first intersected object
+      const selectedObject = intersections[0].object;
+
+      // Perform your selection logic here
+      this.handleObjectSelection(selectedObject);
+    }
+
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
 
@@ -172,6 +143,23 @@ class App {
     buttonEnabled = true;
     }
   }
+
+  // Perform raycasting to check for intersections with objects
+getIntersections(raycaster) {
+  // Update the raycaster with the reticle's position and direction
+  raycaster.setFromCamera({ x: 0, y: 0 }, this.camera);
+
+  // Perform the raycast against the spawned objects
+  return raycaster.intersectObjects(this.spawnedObjects, true);
+}
+
+// Handle the selection of an object
+handleObjectSelection(selectedObject) {
+  console.log('Object selected:', selectedObject);
+
+  // You can implement further actions here based on the selected object
+  // For example, change its color, scale, or perform other interactions.
+}
 
   //Enable rotation and Scaling
   enableRotation(object) {
