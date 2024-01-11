@@ -16,6 +16,11 @@ class App {
   /**
    * Run when the Start AR button is pressed.
    */
+
+  constructor() {
+    // Initialize an array to store spawned objects
+    this.spawnedObjects = [];
+  }
   
   activateXR = async () => {
     try {
@@ -106,7 +111,9 @@ class App {
       this.xrSession.removeEventListener("select", this.onSelect);
       const clone = window.sunflower.clone();
       clone.position.copy(this.reticle.position);
-      this.scene.add(clone)
+      this.scene.add(clone);
+
+      this.spawnedObjects.push(clone);
 
       // Enable rotation for the spawned object
     this.enableRotation(clone);
@@ -158,18 +165,20 @@ class App {
   
         initialPinchDistance = currentPinchDistance;
       } else if (event.touches.length === 1 && !isScaling) {
-        const deltaMove = {
-          x: event.touches[0].clientX - previousTouchPosition.x,
-          y: event.touches[0].clientY - previousTouchPosition.y
-        };
-  
-        object.rotation.y += deltaMove.x * 0.01;
-        object.rotation.x += deltaMove.y * 0.01;
-  
-        previousTouchPosition = {
-          x: event.touches[0].clientX,
-          y: event.touches[0].clientY
-        };
+
+        this.spawnedObjects.forEach((obj) => {
+          const deltaMove = {
+            x: event.touches[0].clientX - previousTouchPosition.x,
+            y: event.touches[0].clientY - previousTouchPosition.y,
+          };
+          object.rotation.y += deltaMove.x * 0.01;
+          object.rotation.x += deltaMove.y * 0.01;
+    
+          previousTouchPosition = {
+            x: event.touches[0].clientX,
+            y: event.touches[0].clientY
+          };
+        });
       }
     };
   
