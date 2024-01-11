@@ -94,7 +94,7 @@ class App {
     this.xrSession.addEventListener("select", this.onSelect);
   
     // Disable the button to prevent further interactions
-    buttonEnabled = false;
+    //buttonEnabled = false;
   
     console.log('Button clicked');
   }
@@ -117,7 +117,7 @@ class App {
       console.log(window.sunflower);
 
       // Re-enable the button after handling the 'select' event
-    buttonEnabled = true;
+    //buttonEnabled = true;
     }
   }
 
