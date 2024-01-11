@@ -84,12 +84,12 @@ class App {
 
     //Comment
     const selectButton = document.getElementById('selectButton');
-    selectButton.addEventListener('click', this.onClickSelect);
+    selectButton.addEventListener('click', (event) =>  this.onClickSelect(event, frame));
   
     console.log('XR session started');
   }
 
-  onClickSelect = (event) => {
+  onClickSelect = (event,frame) => {
     // Prevent the event from propagating to the touch screen
     if (!buttonEnabled) {
       return;
