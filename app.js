@@ -22,6 +22,10 @@ class App {
     this.spawnedObjects = [];
     // Flag to track if a specific object is selected
     this.selectedObject = null;
+
+    this.raycaster = new THREE.Raycaster();
+    // Set up a mouse vector for raycasting
+    this.mouse = new THREE.Vector2();
   }
   
   activateXR = async () => {
@@ -214,6 +218,27 @@ class App {
     const framebuffer = this.xrSession.renderState.baseLayer.framebuffer
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, framebuffer)
     this.renderer.setFramebuffer(framebuffer);
+
+     // Update the raycaster with the camera and mouse position
+     this.raycaster.setFromCamera(this.mouse, this.camera);
+
+     // Perform raycasting on the spawned objects
+    const intersects = this.raycaster.intersectObjects(this.spawnedObjects, true);
+
+    // Check if there's an intersection
+    if (intersects.length > 0) {
+      // The first object in the intersects array is the closest intersected object
+      const selectedObject = intersects[0].object;
+
+      // Do something with the selectedObject (e.g., change its appearance, update UI, etc.)
+      console.log('Selected Object:', selectedObject);
+
+      // Set the selected object
+      this.selectedObject = selectedObject;
+    } else {
+      // If no intersection, clear the selectedObject
+      this.selectedObject = null;
+    }
 
     // Retrieve the pose of the device.
     // XRFrame.getViewerPose can return null while the session attempts to establish tracking.
