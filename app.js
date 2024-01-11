@@ -7,6 +7,7 @@
   }
 })();
 
+let buttonEnabled = true;
 /**
  * Container class to manage connecting to the WebXR Device API
  * and handle rendering on every frame.
@@ -82,8 +83,18 @@ class App {
   }
 
   onClickSelect = (event) => {
+    // Prevent the event from propagating to the touch screen
+    if (!buttonEnabled) {
+      return;
+    }
+  
+    // Prevent the event from propagating to the touch screen
+    event.stopPropagation();
   
     this.xrSession.addEventListener("select", this.onSelect);
+  
+    // Disable the button to prevent further interactions
+    buttonEnabled = false;
   
     console.log('Button clicked');
   }
@@ -106,7 +117,7 @@ class App {
       console.log(window.sunflower);
 
       // Re-enable the button after handling the 'select' event
-    //buttonEnabled = true;
+    buttonEnabled = true;
     }
   }
 
