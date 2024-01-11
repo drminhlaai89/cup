@@ -120,7 +120,7 @@ class App {
     this.enableRotation(clone);
 
      // Set the selected object to the newly spawned clone
-     this.selectedObject = clone;
+      this.selectedObject = clone;
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
@@ -163,16 +163,9 @@ class App {
       if (isScaling && event.touches.length === 2) {
         const currentPinchDistance = calculateDistance(event.touches);
         const distanceChange = currentPinchDistance - initialPinchDistance;
-
-         // Apply scaling only to the selected object
-        if (this.selectedObjects)
-        {
-          const scaleFactor = object.scale.x * (1 + distanceChange * scaleSensitivity);
+        const scaleFactor = object.scale.x * (1 + distanceChange * scaleSensitivity);
   
-          object.scale.setScalar(scaleFactor);
-        }
-        
-  
+        object.scale.setScalar(scaleFactor);
         initialPinchDistance = currentPinchDistance;
       } else if (event.touches.length === 1 && !isScaling) {
         // Apply rotation only to the selected object
