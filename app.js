@@ -27,7 +27,9 @@ class App {
   }
 
   highlightObject(object) {
-     // Reset materials for all objects
+    console.log('Highlighting object:', object);
+
+  // Reset materials for all objects
   this.spawnedObjects.forEach(obj => {
     if (obj !== object && obj.material && obj.material.emissive !== undefined) {
       obj.traverse(child => {
@@ -45,6 +47,8 @@ class App {
         child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
       }
     });
+  } else {
+    console.warn('Cannot highlight the object. Check if the object and its material are defined.');
   }
 }
 
