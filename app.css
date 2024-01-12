@@ -110,18 +110,33 @@ body {
   
   #wrong-hosting-root { display: none; }
 
-/* Add some positioning for the buttons */
-#previousButton,
-#nextButton{
-  font-size: 16px; /* Adjust the font size as needed */
-  padding: 8px; /* Adjust the padding as needed */
-}
-
-/* Position the arrow buttons between the Select button */
-#previousButton {
-  right: calc(100% + 12px); /* Adjust the right position as needed */
-}
-
-#nextButton {
-  left: calc(100% + 12px); /* Adjust the left position as needed */
-}
+  #previousButton,
+  #nextButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  #previousButton {
+    left: 0;
+  }
+  
+  #nextButton {
+    right: 0;
+  }
+  
+  /* Style the arrow buttons */
+  #previousButton,
+  #nextButton{
+    margin-right: 8px;
+    font-size: 16px; /* Adjust the font size as needed */
+    padding: 8px; /* Adjust the padding as needed */
+  }
+  
+  /* Optional: Center the buttons vertically */
+  #selectButton,
+  #previousButton,
+  #nextButton {
+    display: inline-block;
+    vertical-align: middle;
+  }
