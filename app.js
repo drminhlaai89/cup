@@ -24,55 +24,6 @@ class App {
     this.selectedObject = null;
     // Track the index of the currently selected object
     this.currentObjectIndex = 0; 
-
-    this.outlineMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        color: { value: new THREE.Color(0x00ff00) }, // Outline color
-        thickness: { value: 0.02 }, // Outline thickness
-      },
-      vertexShader: `
-        uniform float thickness;
-        varying vec3 vNormal;
-
-        void main() {
-          vNormal = normal;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position + normal * thickness, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform vec3 color;
-        varying vec3 vNormal;
-
-        void main() {
-          float intensity = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
-          gl_FragColor = vec4(color * intensity, 1.0);
-        }
-      `,
-    });
-
-    // Initialize a variable to store the outline object
-    this.outlineObject = new THREE.Group();
-  }
-
-  highlightSelectedObject() {
-    if (this.selectedObject) {
-      // Remove the previous outline object
-      this.scene.remove(this.outlineObject);
-
-      // Clone the selected object and apply the outline material
-      const outlineMesh = this.selectedObject.clone();
-      outlineMesh.material = this.outlineMaterial;
-
-      // Scale the outline object to make it slightly larger than the original
-      outlineMesh.scale.multiplyScalar(1.05);
-
-      // Store the outline object in the variable
-      this.outlineObject = new THREE.Group();
-      this.outlineObject.add(outlineMesh);
-
-      // Add the outline object to the scene
-      this.scene.add(this.outlineObject);
-    }
   }
 
   onClickNext = () => {
@@ -188,9 +139,6 @@ class App {
 
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
-
-      // Highlight the selected object
-      this.highlightSelectedObject();
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
