@@ -25,17 +25,8 @@ class App {
     // Track the index of the currently selected object
     this.currentObjectIndex = 0; 
 
-     // Variable to store the select button press start time
-     this.selectButtonPressStartTime = 0;
-
-     // Timeout duration for holding the select button (in milliseconds)
-     this.selectButtonHoldDuration = 3000; // 3 seconds
- 
-     // Timeout ID for holding the select button
-     this.selectButtonHoldTimer = null;
- 
-     // Flag to track reticle visibility
-     this.isReticleVisible = true;
+     // Timer for holding the select button
+     this.holdTimer = null;
   }
 
   highlightObject(object) {
@@ -78,20 +69,6 @@ class App {
   onClickPrevious = () => {
     this.changeSelectedObject(-1);
     this.highlightObject(this.selectedObject);  // Move to the previous object
-  }
-
-  showReticle(show) {
-    if (this.reticle) {
-      this.reticle.visible = show;
-    }
-  }
-
-  hideReticle() {
-    this.showReticle(false);
-  }
-
-  showReticle() {
-    this.showReticle(true);
   }
   
   activateXR = async () => {
@@ -169,14 +146,12 @@ class App {
     // Prevent the event from propagating to the touch screen
     event.stopPropagation();
 
-    // Store the press start time when the select button is pressed
-    this.selectButtonPressStartTime = Date.now();
-
-     // Enable the timer to toggle reticle visibility after 3 seconds
-    this.selectButtonHoldTimer = setTimeout(() => {
+    // Start the timer on button press
+    this.holdTimer = setTimeout(() => {
       this.toggleReticleVisibility();
-    }, this.selectButtonHoldDuration);
-
+      // Enable the button after toggling reticle visibility
+      buttonEnabled = true;
+    }, 2000); // 2000 milliseconds (2 seconds)
   
     this.xrSession.addEventListener("select", this.onSelect);
   
@@ -194,17 +169,15 @@ class App {
     }
   }
 
+  onClickSelectRelease = () => {
+    // Clear the timer on button release
+    clearTimeout(this.holdTimer);
+    // Enable the button after releasing
+    buttonEnabled = true;
+  }
+
   /** Place a sunflower when the screen is tapped. */
   onSelect = () => {
-
-      // Clear the timer when the select event is triggered
-      clearTimeout(this.selectButtonHoldTimer);
-
-      const holdDuration = Date.now() - this.selectButtonPressStartTime;
-      if (holdDuration >= this.selectButtonHoldDuration) {
-        this.toggleReticleVisibility();
-      }
-
     if (window.sunflower) {
       console.log("App.js sunflower");
       this.xrSession.removeEventListener("select", this.onSelect);
@@ -414,3 +387,7 @@ class App {
 window.app = new App();
 document.getElementById('nextButton').addEventListener('click', window.app.onClickNext);
 document.getElementById('previousButton').addEventListener('click', window.app.onClickPrevious);
+
+const selectButton = document.getElementById('selectButton');
+selectButton.addEventListener('mousedown', window.app.onClickSelect);
+selectButton.addEventListener('mouseup', window.app.onClickSelectRelease);
