@@ -140,3 +140,7 @@ body {
     display: none;
     vertical-align: middle;
   }
+  
+  #toggleReticleButton {
+    margin-bottom: 10px; /* Adjust as needed */
+  }
