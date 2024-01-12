@@ -26,35 +26,6 @@ class App {
     this.currentObjectIndex = 0; 
   }
 
-  highlightObject(object) {
-    console.log('Highlighting object:', object);
-    //Reset materials for all objects
-    this.spawnedObjects.forEach(obj => {
-      if (obj.material) {
-        if (obj.material.emissive !== undefined) {
-          obj.material.emissive.set(0x000000); // Reset emissive color
-        } else {
-          // If emissive property is undefined, create a new material with emissive
-          const newMaterial = new THREE.MeshBasicMaterial({ color: obj.material.color, emissive: 0x000000 });
-          obj.material = newMaterial;
-        }
-      }
-    });
-
-    // Apply a highlight to the selected object
-    if (object) {
-      if (object.material) {
-        if (object.material.emissive !== undefined) {
-          object.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
-        } else {
-          // If emissive property is undefined, create a new material with emissive
-          const newMaterial = new THREE.MeshBasicMaterial({ color: object.material.color, emissive: 0x00ff00 });
-          object.material = newMaterial;
-        }
-      }
-    }
-}
-
   changeSelectedObject(offset) {
     // Increment or decrement the current index
     this.currentObjectIndex += offset;
@@ -68,9 +39,6 @@ class App {
 
     // Set the selected object based on the updated index
     this.selectedObject = this.spawnedObjects[this.currentObjectIndex];
-
-    // Highlight the selected object
-    this.highlightObject(this.selectedObject);
 
     // Do something with the selectedObject (e.g., update UI, etc.)
     console.log('Selected Object:', this.selectedObject);
@@ -188,11 +156,6 @@ class App {
 
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
-
-      // Highlight the selected object
-      this.highlightObject(this.selectedObject);
-
-
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
@@ -333,11 +296,6 @@ class App {
       // Conduct hit test.
       const hitTestResults = frame.getHitTestResults(this.hitTestSource);
 
-      // If we have results, consider the environment stabilized.
-      // if (!this.stabilized && hitTestResults.length > 0) {
-      //   this.stabilized = true;
-      //   document.body.classList.add('stabilized');
-      // }
       if (hitTestResults.length > 0) {
         const hitPose = hitTestResults[0].getPose(this.localReferenceSpace);
 
