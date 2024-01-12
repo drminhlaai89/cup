@@ -24,6 +24,8 @@ class App {
     this.selectedObject = null;
     // Track the index of the currently selected object
     this.currentObjectIndex = 0; 
+
+    this.reticleVisible = true;
   }
 
   highlightObject(object) {
@@ -229,11 +231,12 @@ class App {
   }
 
   onClickShowReticle = () => {
-    this.reticle.visible = !this.reticle.visible;
+     // Toggle the reticle visibility state
+     this.reticleVisible = !this.reticleVisible;
 
-    // Update button text based on reticle visibility
-    const toggleReticleButton = document.getElementById('toggleReticleButton');
-    toggleReticleButton.textContent = this.reticle.visible ? 'Hide Reticle' : 'Show Reticle';
+     // Update button text based on reticle visibility
+     const toggleReticleButton = document.getElementById('toggleReticleButton');
+     toggleReticleButton.textContent = this.reticleVisible ? 'Hide ' : 'Show';
 }
 
 
@@ -339,9 +342,12 @@ class App {
         const hitPose = hitTestResults[0].getPose(this.localReferenceSpace);
 
         // Update the reticle position
-        this.reticle.visible = true;
-        this.reticle.position.set(hitPose.transform.position.x, hitPose.transform.position.y, hitPose.transform.position.z)
-        this.reticle.updateMatrixWorld(true);
+        this.reticle.visible = this.reticleVisible;;
+        if (this.reticleVisible) {
+          // Update the reticle position only if it should be visible
+          this.reticle.position.set(hitPose.transform.position.x, hitPose.transform.position.y, hitPose.transform.position.z);
+          this.reticle.updateMatrixWorld(true);
+        }
         console.log("This is reticle");
       }
 
