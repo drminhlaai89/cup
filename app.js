@@ -27,26 +27,26 @@ class App {
   }
 
   highlightObject(object) {
-     // Reset materials for all objects
-  this.spawnedObjects.forEach(obj => {
-    if (obj !== object && obj.material && obj.material.emissive !== undefined) {
-      obj.traverse(child => {
+       // Reset materials for all objects
+       this.spawnedObjects.forEach(obj => {
+        if (obj !== object && obj.material && obj.material.emissive !== undefined) {
+          obj.traverse(child => {
+            if (child.material && child.material.emissive !== undefined) {
+              child.material.emissive.set(0x000000); // Reset emissive color
+            }
+          });
+        }
+      });
+
+    // Apply a highlight to the selected object
+    if (object) {
+      object.traverse(child => {
         if (child.material && child.material.emissive !== undefined) {
-          child.material.emissive.set(0x000000); // Reset emissive color
+          child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
         }
       });
     }
-  });
-
-  // Apply a highlight to the selected object
-  if (object && object.material && object.material.emissive !== undefined) {
-    object.traverse(child => {
-      if (child.material && child.material.emissive !== undefined) {
-        child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
-      }
-    });
-  } 
-}
+  }
 
   changeSelectedObject(offset) {
     // Increment or decrement the current index
@@ -87,6 +87,8 @@ class App {
 
       // Create the canvas that will contain our camera's background and our virtual scene.
       this.createXRCanvas();
+
+      this.showNavigationButtons(true);   
 
       const selectButton = document.getElementById('selectButton');
       selectButton.style.display = 'inline-block';
@@ -174,8 +176,6 @@ class App {
       console.log(clone.name);
 
       console.log(this.spawnedObjects);
-
-      this.showNavigationButtons(true);   
 
       // Enable rotation for the spawned object
     this.enableRotation(clone);
