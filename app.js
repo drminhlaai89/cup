@@ -26,6 +26,20 @@ class App {
     this.currentObjectIndex = 0; 
   }
 
+  highlightObject(object) {
+    // Reset scale for all objects
+    this.spawnedObjects.forEach(obj => {
+      if (obj !== object) {
+        obj.scale.set(1, 1, 1); // Reset scale
+      }
+    });
+
+    // Apply a scale change to the selected object
+    if (object) {
+      object.scale.set(1.2, 1.2, 1.2); // Set a larger scale (you can customize)
+    }
+  }
+
   changeSelectedObject(offset) {
     // Increment or decrement the current index
     this.currentObjectIndex += offset;
@@ -150,6 +164,9 @@ class App {
       console.log(clone.name);
 
       console.log(this.spawnedObjects);
+
+      // Highlight the selected object (change its scale)
+      this.highlightObject(clone);
 
       // Enable rotation for the spawned object
     this.enableRotation(clone);
