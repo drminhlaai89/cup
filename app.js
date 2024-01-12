@@ -27,19 +27,20 @@ class App {
   }
 
   highlightObject(object) {
-       // Reset materials for all objects
-       this.spawnedObjects.forEach(obj => {
-        if (obj !== object && obj.material && obj.material.emissive !== undefined) {
-          obj.traverse(child => {
-            if (child.material && child.material.emissive !== undefined) {
-              child.material.emissive.set(0x000000); // Reset emissive color
-            }
-          });
-        }
-      });
+        // Reset materials for all objects except the selected one
+    this.spawnedObjects.forEach(obj => {
+      if (obj !== object && obj.material && obj.material.emissive !== undefined) {
+        obj.traverse(child => {
+          if (child.material && child.material.emissive !== undefined) {
+            child.material.emissive.set(0x000000); // Reset emissive color
+          }
+        });
+      }
+    });
 
-    // Apply a highlight to the selected object
-    if (object && object.material && object.material.emissive !== undefined) {
+    // Highlight only the newly spawned object
+    if (object && object.material && object.material.emissive !== undefined && !object.isHighlighted) {
+      object.isHighlighted = true;
       object.traverse(child => {
         if (child.material && child.material.emissive !== undefined) {
           child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
