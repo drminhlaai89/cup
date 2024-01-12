@@ -235,12 +235,25 @@ toggleReticleButton.addEventListener('click', this.onClickShowReticle);
   }
 
   onClickShowReticle = () => {
-     // Toggle the reticle visibility state
-     this.reticleVisible = !this.reticleVisible;
+    // Toggle the reticle visibility state
+    this.reticleVisible = !this.reticleVisible;
 
-     // Update button text based on reticle visibility
-     const toggleReticleButton = document.getElementById('toggleReticleButton');
-     toggleReticleButton.textContent = this.reticleVisible ? 'Hide ' : 'Show';
+    // Update button text based on reticle visibility
+    const toggleReticleButton = document.getElementById('toggleReticleButton');
+    toggleReticleButton.textContent = this.reticleVisible ? 'Hide ' : 'Show ';
+
+    // Hide or show the reticle based on the updated visibility state
+    this.reticle.visible = this.reticleVisible;
+
+    if (this.reticleVisible) {
+        // If reticle is visible, update its position
+        const hitTestResults = this.xrSession.requestHitTestSource({ space: this.viewerSpace });
+        if (hitTestResults.length > 0) {
+            const hitPose = hitTestResults[0].getPose(this.localReferenceSpace);
+            this.reticle.position.set(hitPose.transform.position.x, hitPose.transform.position.y, hitPose.transform.position.z);
+            this.reticle.updateMatrixWorld(true);
+        }
+    }
 }
 
 
