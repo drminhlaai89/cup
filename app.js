@@ -26,17 +26,24 @@ class App {
     this.currentObjectIndex = 0; 
   }
 
+  toggleReticle = () => {
+    this.reticle.visible = !this.reticle.visible;
+    const toggleReticleButton = document.getElementById('toggleReticleButton');
+    toggleReticleButton.textContent = this.reticle.visible ? 'Hide Reticle' : 'Show Reticle';
+    console.log('Reticle visibility toggled:', this.reticle.visible);
+  };
+
   highlightObject(object) {
     // Reset scale for all objects
     this.spawnedObjects.forEach(obj => {
       if (obj !== object) {
-        obj.scale.set(1, 1, 1); // Reset scale
+        //obj.scale.set(1, 1, 1); // Reset scale
       }
     });
 
     // Apply a scale change to the selected object
     if (object) {
-      object.scale.set(1.2, 1.2, 1.2); // Set a larger scale (you can customize)
+      object.scale.set(1.4, 1.4, 1.4); // Set a larger scale (you can customize)
     }
   }
 
@@ -373,3 +380,5 @@ class App {
 window.app = new App();
 document.getElementById('nextButton').addEventListener('click', window.app.onClickNext);
 document.getElementById('previousButton').addEventListener('click', window.app.onClickPrevious);
+// Add event listener for the "Show/Hide Reticle" button
+document.getElementById('toggleReticleButton').addEventListener('click', () => window.app.toggleReticle);
