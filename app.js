@@ -27,7 +27,7 @@ class App {
   }
 
   highlightObject(object) {
-        // Reset materials for all objects except the selected one
+      // Reset materials for all objects
     this.spawnedObjects.forEach(obj => {
       if (obj !== object && obj.material && obj.material.emissive !== undefined) {
         obj.traverse(child => {
@@ -38,9 +38,8 @@ class App {
       }
     });
 
-    // Highlight only the newly spawned object
-    if (object && object.material && object.material.emissive !== undefined && !object.isHighlighted) {
-      object.isHighlighted = true;
+    // Apply a highlight to the selected object
+    if (object && object.material && object.material.emissive !== undefined) {
       object.traverse(child => {
         if (child.material && child.material.emissive !== undefined) {
           child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)

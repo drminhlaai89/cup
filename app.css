@@ -137,6 +137,6 @@ body {
   #selectButton,
   #previousButton,
   #nextButton {
-    display: inline-block;
+    display: none;
     vertical-align: middle;
   }
