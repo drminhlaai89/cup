@@ -24,9 +24,6 @@ class App {
     this.selectedObject = null;
     // Track the index of the currently selected object
     this.currentObjectIndex = 0; 
-
-     // Timer for holding the select button
-     this.holdTimer = null;
   }
 
   highlightObject(object) {
@@ -145,35 +142,24 @@ class App {
   
     // Prevent the event from propagating to the touch screen
     event.stopPropagation();
+  
+    // this.xrSession.addEventListener("select", this.onSelect);
+  
+    // // Disable the button to prevent further interactions
+    // buttonEnabled = false;
 
-    // Start the timer on button press
-    this.holdTimer = setTimeout(() => {
-      this.toggleReticleVisibility();
-      // Enable the button after toggling reticle visibility
-      buttonEnabled = true;
-    }, 2000); // 2000 milliseconds (2 seconds)
-  
+     // Toggle the buttonEnabled state
+  buttonEnabled = !buttonEnabled;
+
+  if (buttonEnabled) {
+    // If button is enabled again, remove the 'select' event listener
+    this.xrSession.removeEventListener("select", this.onSelect);
+  } else {
+    // If button is not enabled, add the 'select' event listener
     this.xrSession.addEventListener("select", this.onSelect);
-  
-    // Disable the button to prevent further interactions
-    buttonEnabled = false;
+  }
   
     console.log('Button clicked');
-  }
-
-  toggleReticleVisibility() {
-    if (this.isReticleVisible) {
-      this.hideReticle();
-    } else {
-      this.showReticle();
-    }
-  }
-
-  onClickSelectRelease = () => {
-    // Clear the timer on button release
-    clearTimeout(this.holdTimer);
-    // Enable the button after releasing
-    buttonEnabled = true;
   }
 
   /** Place a sunflower when the screen is tapped. */
@@ -387,7 +373,3 @@ class App {
 window.app = new App();
 document.getElementById('nextButton').addEventListener('click', window.app.onClickNext);
 document.getElementById('previousButton').addEventListener('click', window.app.onClickPrevious);
-
-const selectButton = document.getElementById('selectButton');
-selectButton.addEventListener('mousedown', window.app.onClickSelect);
-selectButton.addEventListener('mouseup', window.app.onClickSelectRelease);
