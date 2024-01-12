@@ -112,33 +112,16 @@ body {
 
 /* Add some positioning for the buttons */
 #previousButton,
-#nextButton {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#previousButton {
-  left: calc(0% + 8px); /* Adjust the left position as needed */
-}
-
-#nextButton {
-  right: calc(0% + 8px); /* Adjust the right position as needed */
-}
-
-/* Style the arrow buttons */
-#previousButton,
-#nextButton,
-#selectButton {
-  font-size: 14px; /* Adjust the font size as needed */
-  padding: 4px; /* Adjust the padding as needed */
+#nextButton{
+  font-size: 16px; /* Adjust the font size as needed */
+  padding: 8px; /* Adjust the padding as needed */
 }
 
 /* Position the arrow buttons between the Select button */
 #previousButton {
-  right: calc(100% + 8px);
+  right: calc(100% + 12px); /* Adjust the right position as needed */
 }
 
 #nextButton {
-  left: calc(100% + 8px);
+  left: calc(100% + 12px); /* Adjust the left position as needed */
 }
