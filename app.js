@@ -134,6 +134,9 @@ class App {
 
       this.showNavigationButtons(true);
 
+       // Highlight the selected object
+       this.highlightSelectedObject();
+
       // Enable rotation for the spawned object
     this.enableRotation(clone);
 
@@ -177,8 +180,40 @@ class App {
     // Set the selected object based on the updated index
     this.selectedObject = this.spawnedObjects[this.currentObjectIndex];
 
+    // Highlight the selected object
+    this.highlightSelectedObject();
+
     // Do something with the selectedObject (e.g., change its appearance, update UI, etc.)
     console.log('Selected Object:', this.selectedObject);
+
+    // Set the selected object based on the updated index
+    this.selectedObject = this.spawnedObjects[this.currentObjectIndex];
+
+    // Do something with the selectedObject (e.g., change its appearance, update UI, etc.)
+    console.log('Selected Object:', this.selectedObject);
+  }
+
+  // Method to highlight the selected object
+  highlightSelectedObject() {
+    const edgeMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00ff00, // Outline color
+      side: THREE.BackSide,
+    });
+
+    if (this.selectedObject) {
+      // Remove outline from the previously selected object
+      this.selectedObject.children.forEach((child) => {
+        if (child.isLineSegments) {
+          child.material.dispose();
+          this.scene.remove(child);
+        }
+      });
+
+      // Add outline to the currently selected object
+      const edges = new THREE.EdgesGeometry(this.selectedObject.geometry);
+      const line = new THREE.LineSegments(edges, edgeMaterial);
+      this.selectedObject.add(line);
+    }
   }
 
   //Enable rotation and Scaling
