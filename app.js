@@ -189,6 +189,9 @@ class App {
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
 
+      // Highlight the selected object
+      this.highlightSelectedObject();
+
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
 
