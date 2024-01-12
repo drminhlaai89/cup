@@ -142,19 +142,28 @@ body {
   }
 
   #buttons-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    padding: 10px; /* Adjust padding as needed */
+    background-color: #333; /* Change background color as needed */
   }
   
   button {
     font-size: 16px;
     padding: 10px;
-    background-color: #4CAF50;
-    color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+  }
+  
+  #selectButton,
+  #toggleReticleButton {
+    background-color: #4CAF50;
+    color: white;
   }
   
   button:hover {
