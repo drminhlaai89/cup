@@ -28,40 +28,31 @@ class App {
 
   highlightObject(object) {
     console.log('Highlighting object:', object);
-
-  // Reset materials for all objects
-  this.spawnedObjects.forEach(obj => {
-    if (obj !== object && obj.material) {
-      obj.traverse(child => {
-        if (child.material) {
-          if (child.material.emissive !== undefined) {
-            child.material.emissive.set(0x000000); // Reset emissive color
-          }
-        }
-      });
-    }
-  });
-
-  // Apply a highlight to the selected object
-  if (object && object.material) {
-    object.traverse(child => {
-      if (child.material) {
-        if (child.material.emissive !== undefined) {
-          // If emissive is supported, set the emissive color to green
-          child.material.emissive.set(0x00ff00);
+    //Reset materials for all objects
+    this.selectedObject.forEach(obj => {
+      if (obj.material) {
+        if (obj.material.emissive !== undefined) {
+          obj.material.emissive.set(0x000000); // Reset emissive color
         } else {
-          // If emissive is not supported, create a new material with emissive color
-          child.material = new THREE.MeshBasicMaterial({
-            color: child.material.color,
-            emissive: new THREE.Color(0x00ff00),
-            side: THREE.DoubleSide, // Adjust based on your needs
-          });
+          // If emissive property is undefined, create a new material with emissive
+          const newMaterial = new THREE.MeshBasicMaterial({ color: obj.material.color, emissive: 0x000000 });
+          obj.material = newMaterial;
         }
       }
     });
-  } else {
-    console.warn('Cannot highlight the object. Check if the object and its material are defined.');
-  }
+
+    // Apply a highlight to the selected object
+    if (object) {
+      if (object.material) {
+        if (object.material.emissive !== undefined) {
+          object.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
+        } else {
+          // If emissive property is undefined, create a new material with emissive
+          const newMaterial = new THREE.MeshBasicMaterial({ color: object.material.color, emissive: 0x00ff00 });
+          object.material = newMaterial;
+        }
+      }
+    }
 }
 
   changeSelectedObject(offset) {
