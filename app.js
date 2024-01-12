@@ -26,6 +26,39 @@ class App {
     this.currentObjectIndex = 0; 
   }
 
+  highlightObject(object) {
+    // Reset materials for all objects
+    this.spawnedObjects.forEach(obj => {
+      obj.material.emissive.set(0x000000); // Reset emissive color
+    });
+
+    // Apply a highlight to the selected object
+    if (object) {
+      object.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
+    }
+  }
+
+  changeSelectedObject(offset) {
+    // Increment or decrement the current index
+    this.currentObjectIndex += offset;
+
+    // Ensure the index is within bounds
+    if (this.currentObjectIndex < 0) {
+      this.currentObjectIndex = this.spawnedObjects.length - 1;
+    } else if (this.currentObjectIndex >= this.spawnedObjects.length) {
+      this.currentObjectIndex = 0;
+    }
+
+    // Set the selected object based on the updated index
+    this.selectedObject = this.spawnedObjects[this.currentObjectIndex];
+
+    // Highlight the selected object
+    this.highlightObject(this.selectedObject);
+
+    // Do something with the selectedObject (e.g., update UI, etc.)
+    console.log('Selected Object:', this.selectedObject);
+  }
+
   onClickNext = () => {
     this.changeSelectedObject(1);  // Move to the next object
   }
@@ -133,6 +166,9 @@ class App {
       console.log(this.spawnedObjects);
 
       this.showNavigationButtons(true);   
+
+      // Highlight the selected object
+      this.highlightObject(this.selectedObject);
 
       // Enable rotation for the spawned object
     this.enableRotation(clone);
