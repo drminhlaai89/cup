@@ -27,29 +27,31 @@ class App {
   }
 
   highlightObject(object) {
-      // Reset materials for all objects
-      this.spawnedObjects.forEach(obj => {
-        if (obj.material) {
-          if (obj.material.emissive) {
-            obj.material.emissive.set(0x000000); // Reset emissive color
-          } else {
-            // If emissive property is undefined, create a new MeshBasicMaterial
-            obj.material = new THREE.MeshBasicMaterial({ color: obj.material.color });
-          }
-        }
-      });
-  
-      // Apply a highlight to the selected object
-      if (object) {
-        if (object.material) {
-          if (object.material.emissive) {
-            object.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
-          } else {
-            // If emissive property is undefined, create a new MeshBasicMaterial
-            object.material = new THREE.MeshBasicMaterial({ color: object.material.color, emissive: 0x00ff00 });
-          }
+       // Reset materials for all objects
+    this.spawnedObjects.forEach(obj => {
+      if (obj.material) {
+        if (obj.material.emissive !== undefined) {
+          obj.material.emissive.set(0x000000); // Reset emissive color
+        } else {
+          // If emissive property is undefined, create a new material with emissive
+          const newMaterial = new THREE.MeshBasicMaterial({ color: obj.material.color, emissive: 0x000000 });
+          obj.material = newMaterial;
         }
       }
+    });
+
+    // Apply a highlight to the selected object
+    if (object) {
+      if (object.material) {
+        if (object.material.emissive !== undefined) {
+          object.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
+        } else {
+          // If emissive property is undefined, create a new material with emissive
+          const newMaterial = new THREE.MeshBasicMaterial({ color: object.material.color, emissive: 0x00ff00 });
+          object.material = newMaterial;
+        }
+      }
+    }
   }
 
   changeSelectedObject(offset) {
