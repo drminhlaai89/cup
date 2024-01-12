@@ -132,6 +132,10 @@ class App {
     const selectButton = document.getElementById('selectButton');
     selectButton.addEventListener('click',  this.onClickSelect);
     this.showNavigationButtons(true);   
+
+    // Add the event listener for the "Show Reticle" button
+const toggleReticleButton = document.getElementById('toggleReticleButton');
+toggleReticleButton.addEventListener('click', this.onClickShowReticle);
   
     console.log('XR session started');
   }
@@ -389,7 +393,3 @@ class App {
 window.app = new App();
 document.getElementById('nextButton').addEventListener('click', window.app.onClickNext);
 document.getElementById('previousButton').addEventListener('click', window.app.onClickPrevious);
-
-// Add the event listener for the "Show Reticle" button
-const toggleReticleButton = document.getElementById('toggleReticleButton');
-toggleReticleButton.addEventListener('click', this.onClickShowReticle);
