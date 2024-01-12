@@ -29,7 +29,7 @@ class App {
   highlightObject(object) {
     console.log('Highlighting object:', object);
     //Reset materials for all objects
-    this.selectedObject.forEach(obj => {
+    this.spawnedObjects.forEach(obj => {
       if (obj.material) {
         if (obj.material.emissive !== undefined) {
           obj.material.emissive.set(0x000000); // Reset emissive color
