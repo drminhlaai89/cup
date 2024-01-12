@@ -148,6 +148,7 @@ body {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: flex-end; /* Align buttons to the bottom */
     padding: 10px; /* Adjust padding as needed */
     background-color: #333; /* Change background color as needed */
   }
@@ -158,12 +159,6 @@ body {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-  }
-  
-  #selectButton,
-  #toggleReticleButton {
-    background-color: #4CAF50;
-    color: white;
   }
   
   button:hover {
