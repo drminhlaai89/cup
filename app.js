@@ -32,7 +32,7 @@ class App {
     // Reset scale for all objects
     this.spawnedObjects.forEach(obj => {
       if (obj !== object) {
-        //obj.scale.set(1, 1, 1); // Reset scale
+        obj.scale.set(1, 1, 1); // Reset scale
       }
     });
 
