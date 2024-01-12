@@ -36,15 +36,11 @@ class App {
       });
     });
 
-    // Apply a highlight to the selected object
-    if (object) {
-      object.traverse(child => {
-        if (child.material && child.material.emissive !== undefined) {
-          child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
-        }
-      });
-    }
+   // Apply a highlight to the selected object
+    if (object && object.material && object.material.emissive !== undefined) {
+      object.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
   }
+}
 
   changeSelectedObject(offset) {
     // Increment or decrement the current index
