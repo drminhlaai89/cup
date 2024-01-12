@@ -24,6 +24,8 @@ class App {
     this.selectedObject = null;
     // Track the index of the currently selected object
     this.currentObjectIndex = 0; 
+
+    this.outlineEffect = new THREE.OutlineEffect(this.renderer);
   }
 
   onClickNext = () => {
@@ -32,6 +34,16 @@ class App {
 
   onClickPrevious = () => {
     this.changeSelectedObject(-1);  // Move to the previous object
+  }
+
+  highlightSelectedObject() {
+    if (this.selectedObject) {
+      // Clear previous outlines
+      this.outlineEffect.clearSelection();
+
+      // Add outline to the currently selected object
+      this.outlineEffect.setSelection(this.selectedObject);
+    }
   }
   
   activateXR = async () => {
@@ -274,6 +286,9 @@ class App {
       this.camera.matrix.fromArray(view.transform.matrix)
       this.camera.projectionMatrix.fromArray(view.projectionMatrix);
       this.camera.updateMatrixWorld(true);
+
+      // Render the scene with THREE.OutlineEffect
+    this.outlineEffect.render(this.scene, this.camera);
 
       // Conduct hit test.
       const hitTestResults = frame.getHitTestResults(this.hitTestSource);
