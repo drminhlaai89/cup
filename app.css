@@ -141,32 +141,21 @@ body {
     vertical-align: middle;
   }
 
-  
-  #buttons-container {
+  #toggleReticleButton {
+    display: none;
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  button {
-    font-size: 16px;
-    padding: 10px;
+    font-size: 2em;
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    flex: 1; /* Equal width for all buttons */
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  /* Optional: If you want to maintain a space between the buttons */
-  button + button {
-    margin-left: 8px;
   }
 
+  #toggleReticleButton:hover {
+    background-color: #45a049;
+  }
