@@ -110,9 +110,33 @@ body {
   
   #wrong-hosting-root { display: none; }
 
-  #previousButton,
+/* Add some positioning for the buttons */
+#previousButton,
 #nextButton {
   position: absolute;
-  top: 50px; /* Adjust the top position as needed */
-  left: calc(100% + 10px); /* Move to the right of the "Select" button */
+  top: 50%; /* Adjust the top position as needed */
+  transform: translateY(-50%);
+}
+
+#previousButton {
+  left: 0;
+}
+
+#nextButton {
+  right: 0;
+}
+
+/* Optional: Style the buttons as needed */
+#previousButton,
+#nextButton,
+#selectButton {
+  margin-right: 8px;
+}
+
+/* Optional: Center the buttons vertically */
+#selectButton,
+#previousButton,
+#nextButton {
+  display: inline-block;
+  vertical-align: middle;
 }

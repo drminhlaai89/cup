@@ -132,6 +132,8 @@ class App {
 
       console.log(this.spawnedObjects);
 
+      this.showNavigationButtons(true);
+
       // Enable rotation for the spawned object
     this.enableRotation(clone);
 
@@ -145,6 +147,19 @@ class App {
 
       // Re-enable the button after handling the 'select' event
     buttonEnabled = true;
+    }
+  }
+
+  showNavigationButtons(show) {
+    const previousButton = document.getElementById('previousButton');
+    const nextButton = document.getElementById('nextButton');
+
+    if (show) {
+      previousButton.style.display = 'inline-block';
+      nextButton.style.display = 'inline-block';
+    } else {
+      previousButton.style.display = 'none';
+      nextButton.style.display = 'none';
     }
   }
 
