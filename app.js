@@ -25,7 +25,12 @@ class App {
     // Track the index of the currently selected object
     this.currentObjectIndex = 0; 
 
-    this.outlineEffect = new THREE.OutlineEffect(this.renderer);
+    this.outlineMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00ff00, // Outline color
+      side: THREE.BackSide,
+    });
+    // Initialize a variable to store the outline object
+    this.outlineObject = null;
   }
 
   onClickNext = () => {
@@ -38,11 +43,23 @@ class App {
 
   highlightSelectedObject() {
     if (this.selectedObject) {
-      // Clear previous outlines
-      this.outlineEffect.clearSelection();
+      // Remove the previous outline object
+      if (this.outlineObject) {
+        this.scene.remove(this.outlineObject);
+      }
 
-      // Add outline to the currently selected object
-      this.outlineEffect.setSelection(this.selectedObject);
+      // Create a clone of the selected object
+      const outlineGeometry = this.selectedObject.geometry.clone();
+      const outlineMesh = new THREE.Mesh(outlineGeometry, this.outlineMaterial);
+
+      // Scale the outline object to make it slightly larger than the original
+      outlineMesh.scale.multiplyScalar(1.05);
+
+      // Store the outline object in the variable
+      this.outlineObject = outlineMesh;
+
+      // Add the outline object to the scene
+      this.scene.add(outlineMesh);
     }
   }
   
@@ -144,7 +161,9 @@ class App {
 
       console.log(this.spawnedObjects);
 
-      this.showNavigationButtons(true);   
+      this.showNavigationButtons(true); 
+
+      this.highlightSelectedObject();
 
       // Enable rotation for the spawned object
     this.enableRotation(clone);
