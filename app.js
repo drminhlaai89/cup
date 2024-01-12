@@ -27,26 +27,26 @@ class App {
   }
 
   highlightObject(object) {
-      // Reset materials for all objects
-    this.spawnedObjects.forEach(obj => {
-      if (obj !== object && obj.material && obj.material.emissive !== undefined) {
-        obj.traverse(child => {
-          if (child.material && child.material.emissive !== undefined) {
-            child.material.emissive.set(0x000000); // Reset emissive color
-          }
-        });
-      }
-    });
-
-    // Apply a highlight to the selected object
-    if (object && object.material && object.material.emissive !== undefined) {
-      object.traverse(child => {
+     // Reset materials for all objects
+  this.spawnedObjects.forEach(obj => {
+    if (obj !== object && obj.material && obj.material.emissive !== undefined) {
+      obj.traverse(child => {
         if (child.material && child.material.emissive !== undefined) {
-          child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
+          child.material.emissive.set(0x000000); // Reset emissive color
         }
       });
     }
+  });
+
+  // Apply a highlight to the selected object
+  if (object && object.material && object.material.emissive !== undefined) {
+    object.traverse(child => {
+      if (child.material && child.material.emissive !== undefined) {
+        child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
+      }
+    });
   }
+}
 
   changeSelectedObject(offset) {
     // Increment or decrement the current index
@@ -138,6 +138,7 @@ class App {
     //Comment
     const selectButton = document.getElementById('selectButton');
     selectButton.addEventListener('click',  this.onClickSelect);
+    this.showNavigationButtons(true);   
   
     console.log('XR session started');
   }
@@ -184,7 +185,7 @@ class App {
       // Highlight the selected object
       this.highlightObject(this.selectedObject);
 
-      this.showNavigationButtons(true);   
+
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
