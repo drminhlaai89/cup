@@ -84,7 +84,7 @@ class App {
 
     //Comment
     const selectButton = document.getElementById('selectButton');
-    selectButton.addEventListener('click', this.onClickSelect);
+    selectButton.addEventListener('click',  this.onClickSelect);
   
     console.log('XR session started');
   }
@@ -106,6 +106,7 @@ class App {
     console.log('Button clicked');
   }
 
+
   /** Place a sunflower when the screen is tapped. */
   onSelect = () => {
     if (window.sunflower) {
@@ -113,8 +114,11 @@ class App {
       this.xrSession.removeEventListener("select", this.onSelect);
       const clone = window.sunflower.clone();
       clone.position.copy(this.reticle.position);
-      this.scene.add(clone)
+      this.scene.add(clone);
+      clone.name = 'object' + this.spawnedObjects.length;
       this.spawnedObjects.push(clone);
+
+      console.log(clone.name);
 
       console.log(this.spawnedObjects);
 
@@ -123,8 +127,6 @@ class App {
 
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
-
-      console.log(this.selectedObject);
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
