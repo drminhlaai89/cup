@@ -27,19 +27,25 @@ class App {
   }
 
   highlightObject(object) {
-       // Reset materials for all objects
-    this.spawnedObjects.forEach(obj => {
+     // Reset materials for all objects
+  this.spawnedObjects.forEach(obj => {
+    if (obj !== object && obj.material && obj.material.emissive !== undefined) {
       obj.traverse(child => {
         if (child.material && child.material.emissive !== undefined) {
           child.material.emissive.set(0x000000); // Reset emissive color
         }
       });
-    });
+    }
+  });
 
-   // Apply a highlight to the selected object
-    if (object && object.material && object.material.emissive !== undefined) {
-      object.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
-  }
+  // Apply a highlight to the selected object
+  if (object && object.material && object.material.emissive !== undefined) {
+    object.traverse(child => {
+      if (child.material && child.material.emissive !== undefined) {
+        child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
+      }
+    });
+  } 
 }
 
   changeSelectedObject(offset) {
@@ -171,14 +177,15 @@ class App {
 
       this.showNavigationButtons(true);   
 
-      // Highlight the selected object
-      this.highlightObject(this.selectedObject);
-
       // Enable rotation for the spawned object
     this.enableRotation(clone);
 
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
+
+
+      // Highlight the selected object
+      this.highlightObject(this.selectedObject);
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
