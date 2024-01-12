@@ -31,20 +31,32 @@ class App {
 
   // Reset materials for all objects
   this.spawnedObjects.forEach(obj => {
-    if (obj !== object && obj.material && obj.material.emissive !== undefined) {
+    if (obj !== object && obj.material) {
       obj.traverse(child => {
-        if (child.material && child.material.emissive !== undefined) {
-          child.material.emissive.set(0x000000); // Reset emissive color
+        if (child.material) {
+          if (child.material.emissive !== undefined) {
+            child.material.emissive.set(0x000000); // Reset emissive color
+          }
         }
       });
     }
   });
 
   // Apply a highlight to the selected object
-  if (object && object.material && object.material.emissive !== undefined) {
+  if (object && object.material) {
     object.traverse(child => {
-      if (child.material && child.material.emissive !== undefined) {
-        child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
+      if (child.material) {
+        if (child.material.emissive !== undefined) {
+          // If emissive is supported, set the emissive color to green
+          child.material.emissive.set(0x00ff00);
+        } else {
+          // If emissive is not supported, create a new material with emissive color
+          child.material = new THREE.MeshBasicMaterial({
+            color: child.material.color,
+            emissive: new THREE.Color(0x00ff00),
+            side: THREE.DoubleSide, // Adjust based on your needs
+          });
+        }
       }
     });
   } else {
