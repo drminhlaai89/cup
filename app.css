@@ -147,9 +147,10 @@ body {
     left: 0;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around; /* Adjust as needed */
     align-items: flex-end; /* Align buttons to the bottom */
     padding: 10px; /* Adjust padding as needed */
+    background-color: transparent; /* Remove any background color */
   }
   
   button {
