@@ -22,6 +22,16 @@ class App {
     this.spawnedObjects = [];
     // Flag to track if a specific object is selected
     this.selectedObject = null;
+    // Track the index of the currently selected object
+    this.currentObjectIndex = 0; 
+  }
+
+  onClickNext = () => {
+    this.changeSelectedObject(1);  // Move to the next object
+  }
+
+  onClickPrevious = () => {
+    this.changeSelectedObject(-1);  // Move to the previous object
   }
   
   activateXR = async () => {
@@ -136,6 +146,24 @@ class App {
       // Re-enable the button after handling the 'select' event
     buttonEnabled = true;
     }
+  }
+
+  changeSelectedObject(offset) {
+    // Increment or decrement the current index
+    this.currentObjectIndex += offset;
+
+    // Ensure the index is within bounds
+    if (this.currentObjectIndex < 0) {
+      this.currentObjectIndex = this.spawnedObjects.length - 1;
+    } else if (this.currentObjectIndex >= this.spawnedObjects.length) {
+      this.currentObjectIndex = 0;
+    }
+
+    // Set the selected object based on the updated index
+    this.selectedObject = this.spawnedObjects[this.currentObjectIndex];
+
+    // Do something with the selectedObject (e.g., change its appearance, update UI, etc.)
+    console.log('Selected Object:', this.selectedObject);
   }
 
   //Enable rotation and Scaling
@@ -286,3 +314,5 @@ class App {
 };
 
 window.app = new App();
+document.getElementById('nextButton').addEventListener('click', window.app.onClickNext);
+document.getElementById('previousButton').addEventListener('click', window.app.onClickPrevious);
