@@ -27,15 +27,29 @@ class App {
   }
 
   highlightObject(object) {
-    // Reset materials for all objects
-    this.spawnedObjects.forEach(obj => {
-      obj.material.emissive.set(0x000000); // Reset emissive color
-    });
-
-    // Apply a highlight to the selected object
-    if (object) {
-      object.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
-    }
+      // Reset materials for all objects
+      this.spawnedObjects.forEach(obj => {
+        if (obj.material) {
+          if (obj.material.emissive) {
+            obj.material.emissive.set(0x000000); // Reset emissive color
+          } else {
+            // If emissive property is undefined, create a new MeshBasicMaterial
+            obj.material = new THREE.MeshBasicMaterial({ color: obj.material.color });
+          }
+        }
+      });
+  
+      // Apply a highlight to the selected object
+      if (object) {
+        if (object.material) {
+          if (object.material.emissive) {
+            object.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
+          } else {
+            // If emissive property is undefined, create a new MeshBasicMaterial
+            object.material = new THREE.MeshBasicMaterial({ color: object.material.color, emissive: 0x00ff00 });
+          }
+        }
+      }
   }
 
   changeSelectedObject(offset) {
