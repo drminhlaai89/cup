@@ -24,40 +24,6 @@ class App {
     this.selectedObject = null;
     // Track the index of the currently selected object
     this.currentObjectIndex = 0; 
-
-    this.outlineMaterial = new THREE.MeshBasicMaterial({
-      color: 0x00ff00, // Outline color
-      side: THREE.BackSide,
-    });
-    // Initialize a variable to store the outline object
-    this.outlineObject = null;
-  }
-
-  highlightSelectedObject() {
-    if (this.selectedObject && this.selectedObject.geometry) {
-      // Remove the previous outline object
-      if (this.outlineObject) {
-        this.scene.remove(this.outlineObject);
-      }
-
-      // Create a clone of the selected object's geometry
-      const outlineGeometry = this.selectedObject.geometry.clone();
-      
-      // Check if the selected object has a material and use it for the outline material
-      const outlineMaterial = this.selectedObject.material ? this.selectedObject.material.clone() : new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.BackSide });
-
-      // Create a mesh with the cloned geometry and outline material
-      const outlineMesh = new THREE.Mesh(outlineGeometry, outlineMaterial);
-
-      // Scale the outline object to make it slightly larger than the original
-      outlineMesh.scale.multiplyScalar(1.05);
-
-      // Store the outline object in the variable
-      this.outlineObject = outlineMesh;
-
-      // Add the outline object to the scene
-      this.scene.add(outlineMesh);
-    }
   }
 
   onClickNext = () => {
@@ -176,15 +142,6 @@ class App {
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
-
-      if (this.selectedObject) {
-        // Call the highlightSelectedObject() method when the "Select" button is clicked and an object is selected
-        this.highlightSelectedObject();
-      } else {
-        // Handle the case when no object is selected, e.g., show a message or perform other actions
-        console.log('No object selected.');
-      }
-
 
       console.log('Select event handled');
       console.log(window.sunflower);
