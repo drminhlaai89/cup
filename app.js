@@ -33,14 +33,6 @@ class App {
     this.outlineObject = null;
   }
 
-  onClickNext = () => {
-    this.changeSelectedObject(1);  // Move to the next object
-  }
-
-  onClickPrevious = () => {
-    this.changeSelectedObject(-1);  // Move to the previous object
-  }
-
   highlightSelectedObject() {
     if (this.selectedObject) {
       // Remove the previous outline object
@@ -61,6 +53,14 @@ class App {
       // Add the outline object to the scene
       this.scene.add(outlineMesh);
     }
+  }
+
+  onClickNext = () => {
+    this.changeSelectedObject(1);  // Move to the next object
+  }
+
+  onClickPrevious = () => {
+    this.changeSelectedObject(-1);  // Move to the previous object
   }
   
   activateXR = async () => {
@@ -161,9 +161,7 @@ class App {
 
       console.log(this.spawnedObjects);
 
-      this.showNavigationButtons(true); 
-
-      this.highlightSelectedObject();
+      this.showNavigationButtons(true);   
 
       // Enable rotation for the spawned object
     this.enableRotation(clone);
@@ -173,6 +171,16 @@ class App {
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
+
+      if (this.selectedObject) {
+        // Call the highlightSelectedObject() method when the "Select" button is clicked and an object is selected
+        this.highlightSelectedObject();
+      } else {
+        // Handle the case when no object is selected, e.g., show a message or perform other actions
+        console.log('No object selected.');
+      }
+
+
       console.log('Select event handled');
       console.log(window.sunflower);
 
@@ -305,9 +313,6 @@ class App {
       this.camera.matrix.fromArray(view.transform.matrix)
       this.camera.projectionMatrix.fromArray(view.projectionMatrix);
       this.camera.updateMatrixWorld(true);
-
-      // Render the scene with THREE.OutlineEffect
-    this.outlineEffect.render(this.scene, this.camera);
 
       // Conduct hit test.
       const hitTestResults = frame.getHitTestResults(this.hitTestSource);
