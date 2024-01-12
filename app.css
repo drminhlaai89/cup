@@ -140,22 +140,3 @@ body {
     display: none;
     vertical-align: middle;
   }
-
-  #toggleReticleButton {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2em;
-    padding: 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-
-  #toggleReticleButton:hover {
-    background-color: #45a049;
-  }
