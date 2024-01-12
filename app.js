@@ -39,7 +39,7 @@ class App {
       });
 
     // Apply a highlight to the selected object
-    if (object) {
+    if (object && object.material && object.material.emissive !== undefined) {
       object.traverse(child => {
         if (child.material && child.material.emissive !== undefined) {
           child.material.emissive.set(0x00ff00); // Set emissive color to green (you can customize)
@@ -87,8 +87,6 @@ class App {
 
       // Create the canvas that will contain our camera's background and our virtual scene.
       this.createXRCanvas();
-
-      this.showNavigationButtons(true);   
 
       const selectButton = document.getElementById('selectButton');
       selectButton.style.display = 'inline-block';
@@ -183,9 +181,10 @@ class App {
      // Set the selected object to the newly spawned clone
       this.selectedObject = clone;
 
-
       // Highlight the selected object
       this.highlightObject(this.selectedObject);
+
+      this.showNavigationButtons(true);   
 
       const shadowMesh = this.scene.children.find(c => c.name === 'shadowMesh');
       shadowMesh.position.y = clone.position.y;
