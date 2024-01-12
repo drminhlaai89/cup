@@ -34,15 +34,20 @@ class App {
   }
 
   highlightSelectedObject() {
-    if (this.selectedObject) {
+    if (this.selectedObject && this.selectedObject.geometry) {
       // Remove the previous outline object
       if (this.outlineObject) {
         this.scene.remove(this.outlineObject);
       }
 
-      // Create a clone of the selected object
+      // Create a clone of the selected object's geometry
       const outlineGeometry = this.selectedObject.geometry.clone();
-      const outlineMesh = new THREE.Mesh(outlineGeometry, this.outlineMaterial);
+      
+      // Check if the selected object has a material and use it for the outline material
+      const outlineMaterial = this.selectedObject.material ? this.selectedObject.material.clone() : new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.BackSide });
+
+      // Create a mesh with the cloned geometry and outline material
+      const outlineMesh = new THREE.Mesh(outlineGeometry, outlineMaterial);
 
       // Scale the outline object to make it slightly larger than the original
       outlineMesh.scale.multiplyScalar(1.05);
