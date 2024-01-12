@@ -59,11 +59,13 @@ class App {
   }
 
   onClickNext = () => {
-    this.changeSelectedObject(1);  // Move to the next object
+    this.changeSelectedObject(1);
+    this.highlightObject(this.selectedObject);  // Move to the next object
   }
 
   onClickPrevious = () => {
-    this.changeSelectedObject(-1);  // Move to the previous object
+    this.changeSelectedObject(-1);
+    this.highlightObject(this.selectedObject);  // Move to the previous object
   }
   
   activateXR = async () => {
