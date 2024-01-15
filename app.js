@@ -31,17 +31,7 @@ class App {
     this.reticleVisible = true;
   }
 
-  // highlightObject(object) {
-  //   // Reset scale for all objects
-  //   this.spawnedObjects.forEach(obj => {
-  //     if (obj !== object) {
-  //       obj.scale.set(1, 1, 1); // Reset scale
-  //     }
-  //   });
-
     highlightObject(object) {
-      // Retrieve the stored scale for the object
-    const storedScale = this.objectScales.get(object);
       // Reset scale for all objects
       this.spawnedObjects.forEach(obj => {
         if (obj !== object) {
