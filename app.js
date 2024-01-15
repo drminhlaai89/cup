@@ -25,22 +25,43 @@ class App {
     // Track the index of the currently selected object
     this.currentObjectIndex = 0; 
 
-    // Store the scale information for each object
-    this.objectScales = new Map();
+   // Store the original scale information for each object
+    this.objectOriginalScales = new Map();
 
     this.reticleVisible = true;
   }
 
-    highlightObject(object) {
-      // Reset scale for all objects
-      this.spawnedObjects.forEach(obj => {
-        if (obj !== object) {
-          obj.scale.set(1, 1, 1); // Reset scale
-        }
-      });
+  //   highlightObject(object) {
+  //     // Reset scale for all objects
+  //     this.spawnedObjects.forEach(obj => {
+  //       if (obj !== object) {
+  //         obj.scale.set(1, 1, 1); // Reset scale
+  //       }
+  //     });
 
-    // Apply a scale change to the selected object
-    if (object) {
+  //   // Apply a scale change to the selected object
+  //   if (object) {
+  //     object.scale.set(1.4, 1.4, 1.4); // Set a larger scale (you can customize)
+  //   }
+  // }
+
+  highlightObject(object) {
+    // Check if the object has been scaled due to user interaction
+    const isScaledByInteraction = this.objectScales.has(object);
+  
+    // Reset scale for all objects
+    this.spawnedObjects.forEach(obj => {
+      const originalScale = this.objectOriginalScales.get(obj);
+  
+      if (obj !== object && originalScale) {
+        obj.scale.copy(originalScale); // Reset scale to original
+      }
+    });
+  
+    // Apply a scale change to the selected object if not scaled by interaction
+    if (object && !isScaledByInteraction) {
+      // Store the original scale before changing it
+      this.objectOriginalScales.set(object, object.scale.clone());
       object.scale.set(1.4, 1.4, 1.4); // Set a larger scale (you can customize)
     }
   }
