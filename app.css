@@ -67,7 +67,7 @@ body {
     border-radius: 0.1em;
   }
 
-  #selectButton {
+  #selectButton, #toggleReticleButton {
     display: none;
     position: fixed;
     bottom: 20px; 
@@ -82,8 +82,12 @@ body {
     cursor: pointer;
 }
 
-#selectButton:hover {
+#selectButton:hover,#toggleReticleButton:hover {
   background-color: #45a049;
+}
+
+#toggleReticleButton {
+  margin-left: 10px; /* Adjust as needed */
 }
   
   /* #stabilization {
@@ -140,8 +144,3 @@ body {
     display: none;
     vertical-align: middle;
   }
-
-#toggleReticleButton {
-        margin-top: auto; /* Push the button to the bottom */
-        margin-right: 10px; /* Adjust as needed */
-      }

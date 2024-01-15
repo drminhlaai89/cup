@@ -84,6 +84,9 @@ class App {
       const selectButton = document.getElementById('selectButton');
       selectButton.style.display = 'inline-block';
 
+      const toggleReticleButton = document.getElementById('toggleReticleButton');
+      selectButton.style.display = 'inline-block';
+
       // With everything set up, start the app.
       await this.onSessionStarted();
     } catch(e) {
