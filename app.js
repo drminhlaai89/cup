@@ -25,20 +25,37 @@ class App {
     // Track the index of the currently selected object
     this.currentObjectIndex = 0; 
 
+    // Store the scale information for each object
+    this.objectScales = new Map();
+
     this.reticleVisible = true;
   }
 
-  highlightObject(object) {
-    // Reset scale for all objects
+  // highlightObject(object) {
+  //   // Reset scale for all objects
+  //   this.spawnedObjects.forEach(obj => {
+  //     if (obj !== object) {
+  //       obj.scale.set(1, 1, 1); // Reset scale
+  //     }
+  //   });
+
+    highlightObject(object) {
+      // Retrieve the stored scale for the object
+    const storedScale = this.objectScales.get(object);
+      // Reset scale for all objects
     this.spawnedObjects.forEach(obj => {
       if (obj !== object) {
-        obj.scale.set(1, 1, 1); // Reset scale
+        // If a stored scale exists, use it; otherwise, reset to the default scale
+        const scaleToSet = storedScale ? storedScale : new THREE.Vector3(1, 1, 1);
+        obj.scale.copy(scaleToSet);
       }
     });
 
     // Apply a scale change to the selected object
     if (object) {
-      object.scale.set(1.4, 1.4, 1.4); // Set a larger scale (you can customize)
+      // If a stored scale exists, use it; otherwise, set a default larger scale
+      const scaleToSet = storedScale ? storedScale : new THREE.Vector3(1.4, 1.4, 1.4);
+      object.scale.copy(scaleToSet);
     }
   }
 
