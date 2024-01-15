@@ -67,12 +67,12 @@ body {
     border-radius: 0.1em;
   }
 
-  #selectButton, #toggleReticleButton {
+  #selectButton {
     display: none;
     position: fixed;
     bottom: 20px; 
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-60%);
     font-size: 2em;
     padding: 20px;
     background-color: #4CAF50;
@@ -82,12 +82,27 @@ body {
     cursor: pointer;
 }
 
+#toggleReticleButton {
+  display: none;
+  position: fixed;
+  bottom: 20px; 
+  left: 50%;
+  transform: translateX(10%);
+  font-size: 2em;
+  padding: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 #selectButton:hover,#toggleReticleButton:hover {
   background-color: #45a049;
 }
 
 #toggleReticleButton {
-  margin-left: 10px; /* Adjust as needed */
+  margin-left: 50px; /* Adjust as needed */
 }
   
   /* #stabilization {
