@@ -43,19 +43,15 @@ class App {
       // Retrieve the stored scale for the object
     const storedScale = this.objectScales.get(object);
       // Reset scale for all objects
-    this.spawnedObjects.forEach(obj => {
-      if (obj !== object) {
-        // If a stored scale exists, use it; otherwise, reset to the default scale
-        const scaleToSet = storedScale ? storedScale : new THREE.Vector3(1, 1, 1);
-        obj.scale.copy(scaleToSet);
-      }
-    });
+      this.spawnedObjects.forEach(obj => {
+        if (obj !== object) {
+          obj.scale.set(1, 1, 1); // Reset scale
+        }
+      });
 
     // Apply a scale change to the selected object
     if (object) {
-      // If a stored scale exists, use it; otherwise, set a default larger scale
-      const scaleToSet = storedScale ? storedScale : new THREE.Vector3(1.4, 1.4, 1.4);
-      object.scale.copy(scaleToSet);
+      object.scale.set(1.4, 1.4, 1.4); // Set a larger scale (you can customize)
     }
   }
 
